@@ -1,0 +1,6 @@
+#NOTE: This is an Aether internal implementation file, its format can be changed without prior notice.
+#Mon Apr 25 13:38:58 CST 2016
+findbugs-maven-plugin-2.3.2.jar>central=
+findbugs-maven-plugin-2.3.2.jar>releases=
+findbugs-maven-plugin-2.3.2.pom>central=
+findbugs-maven-plugin-2.3.2.pom>releases=

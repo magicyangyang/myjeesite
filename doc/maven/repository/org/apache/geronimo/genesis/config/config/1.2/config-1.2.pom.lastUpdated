@@ -1,0 +1,15 @@
+#NOTE: This is an Aether internal implementation file, its format can be changed without prior notice.
+#Mon Apr 25 13:44:13 CST 2016
+http\://mirrors.ibiblio.org/pub/mirrors/maven2/.error=
+http\://repo.springsource.org/libs-milestone-local/.lastUpdated=1461563051671
+http\://www.mvnsearch.org/maven2/.error=
+http\://mirrors.ibiblio.org/pub/mirrors/maven2/.lastUpdated=1461563048274
+http\://www.mvnsearch.org/maven2/.lastUpdated=1461563046133
+http\://repo.maven.apache.org/maven2/.lastUpdated=1461563053029
+https\://maven.java.net/content/groups/public/.lastUpdated=1461563052677
+https\://maven.java.net/content/groups/public/.error=
+http\://repo.springsource.org/libs-milestone-local/.error=
+http\://www.ibiblio.org/maven2/.error=
+http\://people.apache.org/repo/m2-incubating-repository/.lastUpdated=1461563053590
+http\://www.ibiblio.org/maven2/.lastUpdated=1461563046807
+http\://people.apache.org/repo/m2-incubating-repository/.error=

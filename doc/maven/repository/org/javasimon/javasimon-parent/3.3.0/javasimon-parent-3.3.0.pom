@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.javasimon</groupId>
+	<artifactId>javasimon-parent</artifactId>
+	<packaging>pom</packaging>
+	<version>3.3.0</version>
+	<name>Java Simon</name>
+	<description>Java Simon - simple monitoring library</description>
+	<url>http://code.google.com/p/javasimon/</url>
+
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
+	</parent>
+
+	<modules>
+		<module>core</module>
+		<module>jdbc4</module>
+		<module>javaee</module>
+		<module>spring</module>
+		<module>console</module>
+		<module>examples</module>
+	</modules>
+
+	<properties>
+		<version.javaee-api>6.0</version.javaee-api>
+		<version.spring>3.1.1.RELEASE</version.spring>
+		<version.testng>6.5.2</version.testng>
+		<version.h2database>1.3.166</version.h2database>
+		<version.slf4j>1.6.4</version.slf4j>
+	</properties>
+
+	<scm>
+		<url>https://javasimon.googlecode.com/svn/tags/javasimon-parent-3.3.0</url>
+		<connection>scm:svn:https://javasimon.googlecode.com/svn/tags/javasimon-parent-3.3.0</connection>
+		<developerConnection>scm:svn:https://javasimon.googlecode.com/svn/tags/javasimon-parent-3.3.0</developerConnection>
+	</scm>
+
+	<licenses>
+		<license>
+			<name>The BSD 3-Clause License</name>
+			<url>http://opensource.org/licenses/BSD-3-Clause</url>
+		</license>
+	</licenses>
+
+	<prerequisites>
+		<maven>3.0.0</maven>
+	</prerequisites>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.properties</include>
+					<include>**/*.xml</include>
+				</includes>
+			</resource>
+			<resource>
+				<filtering>false</filtering>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**</include>
+				</includes>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+				<directory>src/test/java</directory>
+				<includes>
+					<include>**</include>
+				</includes>
+			</testResource>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<includes>
+					<include>**</include>
+				</includes>
+			</testResource>
+		</testResources>
+
+		<plugins>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.8</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+					<show>private</show>
+				</configuration>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>2.3</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>javax</groupId>
+				<artifactId>javaee-api</artifactId>
+				<version>${version.javaee-api}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${version.slf4j}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-core</artifactId>
+				<version>${version.spring}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-aop</artifactId>
+				<version>${version.spring}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-jdbc</artifactId>
+				<version>${version.spring}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-web</artifactId>
+				<version>${version.spring}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-test</artifactId>
+				<version>${version.spring}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.testng</groupId>
+				<artifactId>testng</artifactId>
+				<version>${version.testng}</version>
+				<scope>test</scope>
+				<exclusions>
+					<exclusion>
+						<groupId>junit</groupId>
+						<artifactId>junit</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-core</artifactId>
+				<version>1.9.0</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.h2database</groupId>
+				<artifactId>h2</artifactId>
+				<version>${version.h2database}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<developers>
+		<developer>
+			<id>virgo47</id>
+			<name>Richard Richter</name>
+			<email>virgo47@gmail.com</email>
+			<roles>
+				<role>project-leader</role>
+				<role>developer</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<profiles>
+		<profile>
+			<id>dist</id>
+			<modules>
+				<module>core</module>
+				<module>jdbc4</module>
+				<module>javaee</module>
+				<module>spring</module>
+				<module>console</module>
+				<module>examples</module>
+				<module>dist</module>
+			</modules>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-source-plugin</artifactId>
+						<version>2.1.2</version>
+						<executions>
+							<execution>
+								<id>all-sources</id>
+								<goals>
+									<goal>aggregate</goal>
+								</goals>
+								<phase>package</phase>
+								<configuration>
+									<finalName>javasimon-all-${project.version}</finalName>
+									<attach>true</attach>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>2.8.1</version>
+						<executions>
+							<execution>
+								<id>all-javadoc</id>
+								<goals>
+									<goal>aggregate-jar</goal>
+								</goals>
+								<phase>package</phase>
+								<configuration>
+									<excludePackageNames>
+										other,org.javasimon.examples.jdbc,org.javasimon.examples.jdbc.h2,org.javasimon.examples.jmx.custom,org.javasimon.testapp,org.javasimon.testapp.*
+									</excludePackageNames>
+									<!-- Begin: 
+									These resources are usually in src/main/javadoc instead of docs/api -->
+									<javadocDirectory>docs/api</javadocDirectory>
+									<stylesheetfile>docs/api/stylesheet.css</stylesheetfile>
+									<overview>overview.html</overview>
+									<!-- End -->
+									<docfilessubdirs>true</docfilessubdirs>
+									<show>protected</show>
+									<linksource>true</linksource>
+									<doctitle>Java Simon API</doctitle>
+									<windowtitle>Java Simon API</windowtitle>
+									<header>&lt;table&gt;&lt;tr&gt;&lt;td style='valign: middle;'&gt;&lt;span style='font-weight: bold; margin-right: 16px;'&gt;Java
+										Simon ${project.version}&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;div
+										class='logo'/&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</header>
+									<finalName>javasimon-all-${project.version}</finalName>
+									<attach>true</attach>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>

@@ -1,0 +1,22 @@
+#NOTE: This is an Aether internal implementation file, its format can be changed without prior notice.
+#Wed Mar 23 14:11:25 CST 2016
+http\://repo1.maven.org/maven2/.lastUpdated=1458713473649
+http\://git.oschina.net/thinkgem/repos/raw/master/.lastUpdated=1458713479798
+https\://repo.maven.apache.org/maven2/.lastUpdated=1458713485946
+@default-java-repos-http\://download.java.net/maven/2/.lastUpdated=1458713471671
+http\://maven.oschina.net/content/groups/public/.lastUpdated=1458713461513
+http\://repo.maven.apache.org/maven2/.lastUpdated=1458713473225
+https\://repo.maven.apache.org/maven2/.error=
+http\://repo.spring.io/release/.lastUpdated=1458713472592
+http\://repo.maven.apache.org/maven2/.error=
+http\://download.java.net/maven/2/.error=Could not transfer artifact org.springframework\:spring-core11\:jar\:4.0.8.RELEASE from/to java-repos (http\://download.java.net/maven/2/)\: connect timed out
+https\://maven.alfresco.com/nexus/content/groups/public/.lastUpdated=1458713474927
+http\://maven.oschina.net/content/groups/public/.error=
+https\://raw.github.com/thinkgem/repository/master/.error=
+https\://maven.alfresco.com/nexus/content/groups/public/.error=
+https\://app.camunda.com/nexus/content/groups/public/.lastUpdated=1458713479600
+http\://git.oschina.net/thinkgem/repos/raw/master/.error=
+http\://repo.spring.io/release/.error=
+https\://app.camunda.com/nexus/content/groups/public/.error=
+http\://repo1.maven.org/maven2/.error=
+https\://raw.github.com/thinkgem/repository/master/.lastUpdated=1458713483256

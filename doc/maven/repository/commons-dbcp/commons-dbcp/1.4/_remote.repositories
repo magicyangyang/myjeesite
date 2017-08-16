@@ -1,0 +1,7 @@
+#NOTE: This is an Aether internal implementation file, its format can be changed without prior notice.
+#Wed Apr 06 15:04:48 CST 2016
+commons-dbcp-1.4.jar>=
+commons-dbcp-1.4-sources.jar>oschina-repos=
+commons-dbcp-1.4.jar>oschina-repos=
+commons-dbcp-1.4.pom>central=
+commons-dbcp-1.4.pom>oschina-repos=

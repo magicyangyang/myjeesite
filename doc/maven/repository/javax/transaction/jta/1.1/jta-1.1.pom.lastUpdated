@@ -1,0 +1,6 @@
+#NOTE: This is an Aether internal implementation file, its format can be changed without prior notice.
+#Wed Apr 06 15:01:57 CST 2016
+file\://D\:\\test\\jeesite\\doc\\maven\\repository\\com\\alibaba\\druid\\1.0.11/lib/.lastUpdated=1459926107183
+@default-central-https\://repo.maven.apache.org/maven2/.lastUpdated=1459926117232
+https\://repo.maven.apache.org/maven2/.error=Could not transfer artifact javax.transaction\:jta\:pom\:1.1 from/to central (https\://repo.maven.apache.org/maven2)\: connect timed out
+file\://D\:\\test\\jeesite\\doc\\maven\\repository\\com\\alibaba\\druid\\1.0.11/lib/.error=

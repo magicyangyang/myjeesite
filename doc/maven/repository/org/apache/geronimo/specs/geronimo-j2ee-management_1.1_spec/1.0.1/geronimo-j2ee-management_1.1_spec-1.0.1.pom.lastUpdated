@@ -1,0 +1,15 @@
+#NOTE: This is an Aether internal implementation file, its format can be changed without prior notice.
+#Mon Apr 25 13:46:42 CST 2016
+@default-http\://repository.jboss.org/maven2/.lastUpdated=1461563194871
+http\://mirrors.ibiblio.org/pub/mirrors/maven2/.error=
+http\://repo.springsource.org/libs-milestone-local/.lastUpdated=1461563197853
+http\://www.mvnsearch.org/maven2/.error=
+http\://mirrors.ibiblio.org/pub/mirrors/maven2/.lastUpdated=1461563196982
+http\://www.mvnsearch.org/maven2/.lastUpdated=1461563194989
+http\://repo.maven.apache.org/maven2/.lastUpdated=1461563202498
+https\://maven.java.net/content/groups/public/.lastUpdated=1461563202146
+https\://maven.java.net/content/groups/public/.error=
+http\://repo.springsource.org/libs-milestone-local/.error=
+http\://www.ibiblio.org/maven2/.error=
+http\://www.ibiblio.org/maven2/.lastUpdated=1461563195661
+http\://repository.jboss.org/maven2/.error=Could not transfer artifact org.apache.geronimo.specs\:geronimo-j2ee-management_1.1_spec\:pom\:1.0.1 from/to jboss-cache (http\://repository.jboss.org/maven2)\: Connection to http\://repository.jboss.org refused

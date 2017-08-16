@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.huli.dao.WechatLogDao">
+    
+	<sql id="wechatLogColumns">
+		a.id AS "id",
+		a.uid AS "uid",
+		a.nick_name AS "nickName",
+		a.openid AS "openid",
+		a.gender AS "gender",
+		a.province AS "province",
+		a.city AS "city",
+		a.country AS "country",
+		a.headimgurl AS "headimgurl",
+		a.privilege AS "privilege",
+		a.is_subscribe AS "isSubscribe",
+		a.subscribe_time AS "subscribeTime",
+		a.language AS "language",
+		a.union_id AS "unionId",
+		a.remark AS "remark",
+		a.group_id AS "groupId",
+		a.login_time AS "loginTime"
+	</sql>
+	
+	<sql id="wechatLogJoins">
+	</sql>
+    
+	<select id="get" resultType="WechatLog">
+		SELECT 
+			<include refid="wechatLogColumns"/>
+		FROM wechat_log a
+		<include refid="wechatLogJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="WechatLog">
+		SELECT 
+			<include refid="wechatLogColumns"/>
+		FROM wechat_log a
+		<include refid="wechatLogJoins"/>
+		<where>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="WechatLog">
+		SELECT 
+			<include refid="wechatLogColumns"/>
+		FROM wechat_log a
+		<include refid="wechatLogJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO wechat_log(
+			id,
+			uid,
+			nick_name,
+			openid,
+			gender,
+			province,
+			city,
+			country,
+			headimgurl,
+			privilege,
+			is_subscribe,
+			subscribe_time,
+			language,
+			union_id,
+			remark,
+			group_id,
+			login_time
+		) VALUES (
+			#{id},
+			#{uid},
+			#{nickName},
+			#{openid},
+			#{gender},
+			#{province},
+			#{city},
+			#{country},
+			#{headimgurl},
+			#{privilege},
+			#{isSubscribe},
+			#{subscribeTime},
+			#{language},
+			#{unionId},
+			#{remark},
+			#{groupId},
+			#{loginTime}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE wechat_log SET 	
+			uid = #{uid},
+			nick_name = #{nickName},
+			openid = #{openid},
+			gender = #{gender},
+			province = #{province},
+			city = #{city},
+			country = #{country},
+			headimgurl = #{headimgurl},
+			privilege = #{privilege},
+			is_subscribe = #{isSubscribe},
+			subscribe_time = #{subscribeTime},
+			language = #{language},
+			union_id = #{unionId},
+			remark = #{remark},
+			group_id = #{groupId},
+			login_time = #{loginTime}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM wechat_log
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
