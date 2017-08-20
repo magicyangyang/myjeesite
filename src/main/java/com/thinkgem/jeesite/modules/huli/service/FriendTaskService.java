@@ -3,6 +3,7 @@
  */
 package com.thinkgem.jeesite.modules.huli.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
+import com.thinkgem.jeesite.common.utils.IdGen;
 import com.thinkgem.jeesite.modules.huli.entity.FriendTask;
 import com.thinkgem.jeesite.modules.huli.dao.FriendTaskDao;
 
@@ -44,7 +46,16 @@ public class FriendTaskService extends CrudService<FriendTaskDao, FriendTask> {
 	
 	@Transactional(readOnly = false)
 	public void save(FriendTask friendTask) {
-		super.save(friendTask);
+		//super.save(friendTask);
+		if (friendTask.getIsNewRecord()){
+			friendTask.setId(IdGen.uuid());
+			friendTask.setCreateTime(new Date());
+			friendTask.setUpdateTime(new Date());
+			dao.insert(friendTask);
+		}else{
+			friendTask.setUpdateTime(new Date());
+			dao.update(friendTask);
+		}
 	}
 	
 	@Transactional(readOnly = false)
@@ -54,6 +65,15 @@ public class FriendTaskService extends CrudService<FriendTaskDao, FriendTask> {
 
 	public List<FriendTask> getTasksByInviteOpenid(String inviteOpenid) {
 		return dao.getTasksByInviteOpenid(inviteOpenid);
+	}
+	
+	public FriendTask getByOpenids(String inviteOpenid, String taskOpenId) {
+		FriendTask  task =  null;
+		List<FriendTask> taskList = dao.getTasksByOpenids(inviteOpenid, taskOpenId);
+		if(taskList != null && taskList.size()>0){
+			task = taskList.get(0);
+		}
+		return task;
 	}
 	
 }

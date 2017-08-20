@@ -133,5 +133,12 @@
 		WHERE a.invite_open_id = #{inviteOpenid} and status =1  order by update_time asc limit 3;
 	</select>
 	
+	<select id="getTasksByOpenids" resultType="FriendTask">
+		SELECT 
+			<include refid="friendTaskColumns"/>
+		FROM friend_task a
+		<include refid="friendTaskJoins"/>
+		WHERE a.invite_open_id = #{inviteOpenid} and task_open_id =#{taskOpenId};
+	</select>	
 	
 </mapper>
