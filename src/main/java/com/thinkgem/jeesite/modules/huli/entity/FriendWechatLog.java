@@ -10,36 +10,57 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 
 /**
- * 微信日志管理Entity
- * @author spring
+ * 用户信息管理Entity
+ * @author shuai
  * @version 2017-08-20
  */
-public class WechatLog extends DataEntity<WechatLog> {
+public class FriendWechatLog extends DataEntity<FriendWechatLog> {
 	
 	private static final long serialVersionUID = 1L;
-	private Long uid;		// 搜易贷用户uid
+	private Long uid;		// 狐狸金服用户uid
 	private String nickName;		// 昵称
 	private String openid;		// 微信账号标识
-	private String gender;		// 用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
+	private Integer gender;		// 用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
 	private String province;		// 用户个人资料填写的省份
 	private String city;		// 普通用户个人资料填写的城市
 	private String country;		// 国家，如中国为CN
 	private String headimgurl;		// 用户头像，最后一个数值代表正方形头像大小（有0、46、64、96、132数值可选，0代表640*640正方形头像），用户没有头像时该项为空
 	private String privilege;		// 用户特权信息，json 数组，如微信沃卡用户为（chinaunicom）
-	private String isSubscribe;		// 用户是否订阅该公众号标识，值为0时，代表此用户没有关注该公众号，拉取不到其余信息。
+	private Integer isSubscribe;		// 用户是否订阅该公众号标识，值为0时，代表此用户没有关注该公众号，拉取不到其余信息。
 	private Long subscribeTime;		// 关注时间
-	private String language;		// 用户使用语言区域
+	private String language;		// language
 	private String unionId;		// 只有在用户将公众号绑定到微信开放平台帐号后，才会出现该字段
 	private String remark;		// 公众号运营者对粉丝的备注，公众号运营者可在微信公众平台用户管理界面对粉丝添加备注
-	private String groupId;		// 用户所在的分组ID
+	private Integer groupId;		// 用户所在的分组ID
 	private Date loginTime;		// 登录时间
 	
-	public WechatLog() {
+	public FriendWechatLog() {
 		super();
 	}
 
-	public WechatLog(String id){
+	public FriendWechatLog(String id){
 		super(id);
+	}
+
+	public FriendWechatLog(User user) {
+		this.uid = null;
+		this.nickName = user.getNickName();
+		this.openid = user.getOpenId();
+		this.gender = user.getGender();
+		this.province = user.getProvince();
+		this.city = user.getCity();
+		this.country = user.getCountry();
+		this.headimgurl = user.getHeadimgurl();
+		if(null!=user.getPrivilege()){
+			this.privilege = user.getPrivilege().toJSONString();
+		}
+		this.isSubscribe = user.isSubscribe()==true?1:0;
+		this.subscribeTime = user.getSubscribeTime();
+		this.language = user.getLanguage();
+		this.unionId = user.getUnionId();
+		this.remark = user.getRemark();
+		this.groupId = user.getGroupId();
+		this.loginTime = new Date();
 	}
 
 	public Long getUid() {
@@ -68,12 +89,11 @@ public class WechatLog extends DataEntity<WechatLog> {
 		this.openid = openid;
 	}
 	
-	@Length(min=0, max=2, message="用户的性别，值为1时是男性，值为2时是女性，值为0时是未知长度必须介于 0 和 2 之间")
-	public String getGender() {
+	public Integer getGender() {
 		return gender;
 	}
 
-	public void setGender(String gender) {
+	public void setGender(Integer gender) {
 		this.gender = gender;
 	}
 	
@@ -122,12 +142,11 @@ public class WechatLog extends DataEntity<WechatLog> {
 		this.privilege = privilege;
 	}
 	
-	@Length(min=0, max=2, message="用户是否订阅该公众号标识，值为0时，代表此用户没有关注该公众号，拉取不到其余信息。长度必须介于 0 和 2 之间")
-	public String getIsSubscribe() {
+	public Integer getIsSubscribe() {
 		return isSubscribe;
 	}
 
-	public void setIsSubscribe(String isSubscribe) {
+	public void setIsSubscribe(Integer isSubscribe) {
 		this.isSubscribe = isSubscribe;
 	}
 	
@@ -139,7 +158,7 @@ public class WechatLog extends DataEntity<WechatLog> {
 		this.subscribeTime = subscribeTime;
 	}
 	
-	@Length(min=0, max=20, message="用户使用语言区域长度必须介于 0 和 20 之间")
+	@Length(min=0, max=20, message="language长度必须介于 0 和 20 之间")
 	public String getLanguage() {
 		return language;
 	}
@@ -166,12 +185,11 @@ public class WechatLog extends DataEntity<WechatLog> {
 		this.remark = remark;
 	}
 	
-	@Length(min=0, max=10, message="用户所在的分组ID长度必须介于 0 和 10 之间")
-	public String getGroupId() {
+	public Integer getGroupId() {
 		return groupId;
 	}
 
-	public void setGroupId(String groupId) {
+	public void setGroupId(Integer groupId) {
 		this.groupId = groupId;
 	}
 	

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.thinkgem.jeesite.modules.huli.dao.WechatLogDao">
+<mapper namespace="com.thinkgem.jeesite.modules.huli.dao.FriendWechatLogDao">
     
-	<sql id="wechatLogColumns">
+	<sql id="friendWechatLogColumns">
 		a.id AS "id",
 		a.uid AS "uid",
 		a.nick_name AS "nickName",
@@ -22,75 +22,24 @@
 		a.login_time AS "loginTime"
 	</sql>
 	
-	<sql id="wechatLogJoins">
+	<sql id="friendWechatLogJoins">
 	</sql>
     
-	<select id="get" resultType="WechatLog">
+	<select id="get" resultType="FriendWechatLog">
 		SELECT 
-			<include refid="wechatLogColumns"/>
-		FROM wechat_log a
-		<include refid="wechatLogJoins"/>
+			<include refid="friendWechatLogColumns"/>
+		FROM friend_wechat_log a
+		<include refid="friendWechatLogJoins"/>
 		WHERE a.id = #{id}
 	</select>
 	
-	<select id="findList" resultType="WechatLog">
+	<select id="findList" resultType="FriendWechatLog">
 		SELECT 
-			<include refid="wechatLogColumns"/>
-		FROM wechat_log a
-		<include refid="wechatLogJoins"/>
+			<include refid="friendWechatLogColumns"/>
+		FROM friend_wechat_log a
+		<include refid="friendWechatLogJoins"/>
 		<where>
 			
-			<if test="id != null and id != ''">
-				AND a.id = #{id}
-			</if>
-			<if test="uid != null and uid != ''">
-				AND a.uid = #{uid}
-			</if>
-			<if test="nickName != null and nickName != ''">
-				AND a.nick_name = #{nickName}
-			</if>
-			<if test="openid != null and openid != ''">
-				AND a.openid = #{openid}
-			</if>
-			<if test="gender != null and gender != ''">
-				AND a.gender = #{gender}
-			</if>
-			<if test="province != null and province != ''">
-				AND a.province = #{province}
-			</if>
-			<if test="city != null and city != ''">
-				AND a.city = #{city}
-			</if>
-			<if test="country != null and country != ''">
-				AND a.country = #{country}
-			</if>
-			<if test="headimgurl != null and headimgurl != ''">
-				AND a.headimgurl = #{headimgurl}
-			</if>
-			<if test="privilege != null and privilege != ''">
-				AND a.privilege = #{privilege}
-			</if>
-			<if test="isSubscribe != null and isSubscribe != ''">
-				AND a.is_subscribe = #{isSubscribe}
-			</if>
-			<if test="subscribeTime != null and subscribeTime != ''">
-				AND a.subscribe_time = #{subscribeTime}
-			</if>
-			<if test="language != null and language != ''">
-				AND a.language = #{language}
-			</if>
-			<if test="unionId != null and unionId != ''">
-				AND a.union_id = #{unionId}
-			</if>
-			<if test="remark != null and remark != ''">
-				AND a.remark = #{remark}
-			</if>
-			<if test="groupId != null and groupId != ''">
-				AND a.group_id = #{groupId}
-			</if>
-			<if test="loginTime != null and loginTime != ''">
-				AND a.login_time = #{loginTime}
-			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -101,11 +50,11 @@
 		</choose>
 	</select>
 	
-	<select id="findAllList" resultType="WechatLog">
+	<select id="findAllList" resultType="FriendWechatLog">
 		SELECT 
-			<include refid="wechatLogColumns"/>
-		FROM wechat_log a
-		<include refid="wechatLogJoins"/>
+			<include refid="friendWechatLogColumns"/>
+		FROM friend_wechat_log a
+		<include refid="friendWechatLogJoins"/>
 		<where>
 			
 		</where>		
@@ -119,7 +68,7 @@
 	</select>
 	
 	<insert id="insert">
-		INSERT INTO wechat_log(
+		INSERT INTO friend_wechat_log(
 			id,
 			uid,
 			nick_name,
@@ -159,7 +108,7 @@
 	</insert>
 	
 	<update id="update">
-		UPDATE wechat_log SET 	
+		UPDATE friend_wechat_log SET 	
 			uid = #{uid},
 			nick_name = #{nickName},
 			openid = #{openid},
@@ -180,7 +129,7 @@
 	</update>
 	
 	<update id="delete">
-		DELETE FROM wechat_log
+		DELETE FROM friend_wechat_log
 		WHERE id = #{id}
 	</update>
 	

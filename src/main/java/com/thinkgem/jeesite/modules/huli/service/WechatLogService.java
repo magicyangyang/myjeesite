@@ -16,7 +16,7 @@ import com.thinkgem.jeesite.modules.huli.dao.WechatLogDao;
 /**
  * 微信日志管理Service
  * @author spring
- * @version 2017-08-13
+ * @version 2017-08-20
  */
 @Service
 @Transactional(readOnly = true)

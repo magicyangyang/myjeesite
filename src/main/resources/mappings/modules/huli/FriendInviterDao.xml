@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.huli.dao.FriendInviterDao">
+    
+	<sql id="friendInviterColumns">
+		a.id AS "id",
+		a.openid AS "openid",
+		a.status AS "status",
+		a.is_sendmoney AS "isSendmoney",
+		a.invite_num AS "inviteNum",
+		a.score AS "score",
+		a.code AS "code",
+		a.remark AS "remark",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime"
+	</sql>
+	
+	<sql id="friendInviterJoins">
+	</sql>
+    
+	<select id="get" resultType="FriendInviter">
+		SELECT 
+			<include refid="friendInviterColumns"/>
+		FROM friend_inviter a
+		<include refid="friendInviterJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="FriendInviter">
+		SELECT 
+			<include refid="friendInviterColumns"/>
+		FROM friend_inviter a
+		<include refid="friendInviterJoins"/>
+		<where>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="FriendInviter">
+		SELECT 
+			<include refid="friendInviterColumns"/>
+		FROM friend_inviter a
+		<include refid="friendInviterJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO friend_inviter(
+			id,
+			openid,
+			status,
+			is_sendmoney,
+			invite_num,
+			score,
+			code,
+			remark,
+			create_time,
+			update_time
+		) VALUES (
+			#{id},
+			#{openid},
+			#{status},
+			#{isSendmoney},
+			#{inviteNum},
+			#{score},
+			#{code},
+			#{remark},
+			#{createTime},
+			#{updateTime}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE friend_inviter SET 	
+			openid = #{openid},
+			status = #{status},
+			is_sendmoney = #{isSendmoney},
+			invite_num = #{inviteNum},
+			score = #{score},
+			code = #{code},
+			remark = #{remark},
+			create_time = #{createTime},
+			update_time = #{updateTime}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM friend_inviter
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

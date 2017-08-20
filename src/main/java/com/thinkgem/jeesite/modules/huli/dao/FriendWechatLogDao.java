@@ -5,14 +5,14 @@ package com.thinkgem.jeesite.modules.huli.dao;
 
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
-import com.thinkgem.jeesite.modules.huli.entity.WechatLog;
+import com.thinkgem.jeesite.modules.huli.entity.FriendWechatLog;
 
 /**
- * 微信日志管理DAO接口
- * @author spring
+ * 用户信息管理DAO接口
+ * @author shuai
  * @version 2017-08-20
  */
 @MyBatisDao
-public interface WechatLogDao extends CrudDao<WechatLog> {
+public interface FriendWechatLogDao extends CrudDao<FriendWechatLog> {
 	
 }

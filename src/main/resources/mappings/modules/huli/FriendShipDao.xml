@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.huli.dao.FriendShipDao">
+    
+	<sql id="friendShipColumns">
+		a.id AS "id",
+		a.invite_open_id AS "inviteOpenId",
+		a.task_open_id AS "taskOpenId",
+		a.task_nickname AS "taskNickname",
+		a.task_headimgurl AS "taskHeadimgurl",
+		a.remark AS "remark",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime"
+	</sql>
+	
+	<sql id="friendShipJoins">
+	</sql>
+    
+	<select id="get" resultType="FriendShip">
+		SELECT 
+			<include refid="friendShipColumns"/>
+		FROM friend_ship a
+		<include refid="friendShipJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="FriendShip">
+		SELECT 
+			<include refid="friendShipColumns"/>
+		FROM friend_ship a
+		<include refid="friendShipJoins"/>
+		<where>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="FriendShip">
+		SELECT 
+			<include refid="friendShipColumns"/>
+		FROM friend_ship a
+		<include refid="friendShipJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO friend_ship(
+			id,
+			invite_open_id,
+			task_open_id,
+			task_nickname,
+			task_headimgurl,
+			remark,
+			create_time,
+			update_time
+		) VALUES (
+			#{id},
+			#{inviteOpenId},
+			#{taskOpenId},
+			#{taskNickname},
+			#{taskHeadimgurl},
+			#{remark},
+			#{createTime},
+			#{updateTime}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE friend_ship SET 	
+			invite_open_id = #{inviteOpenId},
+			task_open_id = #{taskOpenId},
+			task_nickname = #{taskNickname},
+			task_headimgurl = #{taskHeadimgurl},
+			remark = #{remark},
+			create_time = #{createTime},
+			update_time = #{updateTime}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM friend_ship
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

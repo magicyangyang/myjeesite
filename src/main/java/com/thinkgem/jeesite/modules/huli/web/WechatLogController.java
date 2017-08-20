@@ -19,7 +19,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.web.BaseController;
-import com.thinkgem.jeesite.common.utils.JsonResponseUtil;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.huli.entity.WechatLog;
 import com.thinkgem.jeesite.modules.huli.service.WechatLogService;
@@ -27,7 +26,7 @@ import com.thinkgem.jeesite.modules.huli.service.WechatLogService;
 /**
  * 微信日志管理Controller
  * @author spring
- * @version 2017-08-13
+ * @version 2017-08-20
  */
 @Controller
 @RequestMapping(value = "${adminPath}/huli/wechatLog")
@@ -55,12 +54,6 @@ public class WechatLogController extends BaseController {
 		model.addAttribute("page", page);
 		return "modules/huli/wechatLogList";
 	}
-	
-	@RequestMapping(value = {"jsonlist", "json"})
-	@ResponseBody
-	public Page<WechatLog> jsonlist(WechatLog wechatLog, HttpServletRequest request, HttpServletResponse response, Model model) {
-		return wechatLogService.findPage(new Page<WechatLog>(request, response), wechatLog); 
-	}
 
 	@RequiresPermissions("huli:wechatLog:view")
 	@RequestMapping(value = "form")
@@ -86,6 +79,12 @@ public class WechatLogController extends BaseController {
 		wechatLogService.delete(wechatLog);
 		addMessage(redirectAttributes, "删除微信登录日志成功");
 		return "redirect:"+Global.getAdminPath()+"/huli/wechatLog/?repage";
+	}
+	
+	@RequestMapping(value = {"jsonlist", "json"})
+	@ResponseBody
+	public Page<WechatLog> jsonlist(WechatLog wechatLog, HttpServletRequest request, HttpServletResponse response, Model model) {
+		return wechatLogService.findPage(new Page<WechatLog>(request, response), wechatLog); 
 	}
 
 }
