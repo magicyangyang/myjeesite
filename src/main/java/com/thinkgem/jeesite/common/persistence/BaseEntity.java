@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Maps;
 import com.thinkgem.jeesite.common.config.Global;
@@ -37,22 +38,26 @@ public abstract class BaseEntity<T> implements Serializable {
 	/**
 	 * 当前用户
 	 */
+	@JSONField(serialize=false)
 	protected User currentUser;
 	
 	/**
 	 * 当前实体分页对象
 	 */
+	@JSONField(serialize=false)
 	protected Page<T> page;
 	
 	/**
 	 * 自定义SQL（SQL标识，SQL内容）
 	 */
+	@JSONField(serialize=false)
 	protected Map<String, String> sqlMap;
 	
 	/**
 	 * 是否是新记录（默认：false），调用setIsNewRecord()设置新记录，使用自定义ID。
 	 * 设置为true后强制执行插入语句，ID不会自动生成，需从手动传入。
 	 */
+	@JSONField(serialize=false)
 	protected boolean isNewRecord = false;
 
 	public BaseEntity() {

@@ -133,4 +133,13 @@
 		WHERE id = #{id}
 	</update>
 	
+	
+	<select id="getByOpenid" resultType="FriendWechatLog">
+		SELECT 
+			<include refid="friendWechatLogColumns"/>
+		FROM friend_wechat_log a
+		<include refid="friendWechatLogJoins"/>
+		WHERE a.openid = #{openid}
+	</select>
+	
 </mapper>

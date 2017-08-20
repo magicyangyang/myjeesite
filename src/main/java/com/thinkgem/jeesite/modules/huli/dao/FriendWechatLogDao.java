@@ -14,5 +14,7 @@ import com.thinkgem.jeesite.modules.huli.entity.FriendWechatLog;
  */
 @MyBatisDao
 public interface FriendWechatLogDao extends CrudDao<FriendWechatLog> {
+
+	FriendWechatLog getByOpenid(String openid);
 	
 }

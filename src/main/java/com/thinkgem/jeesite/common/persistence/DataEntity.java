@@ -8,6 +8,7 @@ import java.util.Date;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.thinkgem.jeesite.common.utils.IdGen;
@@ -23,11 +24,17 @@ public abstract class DataEntity<T> extends BaseEntity<T> {
 
 	private static final long serialVersionUID = 1L;
 	
+	@JSONField(serialize=false)
 	protected String remarks;	// 备注
+	@JSONField(serialize=false)
 	protected User createBy;	// 创建者
+	@JSONField(serialize=false)
 	protected Date createDate;	// 创建日期
+	@JSONField(serialize=false)
 	protected User updateBy;	// 更新者
+	@JSONField(serialize=false)
 	protected Date updateDate;	// 更新日期
+	@JSONField(serialize=false)
 	protected String delFlag; 	// 删除标记（0：正常；1：删除；2：审核）
 	
 	public DataEntity() {

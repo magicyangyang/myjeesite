@@ -1,13 +1,17 @@
 package com.thinkgem.jeesite.modules.huli.utils;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.google.common.collect.ImmutableMap;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang3.StringUtils;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.ImmutableMap;
 
 public final class JsonResponseUtil {
 
@@ -27,77 +31,77 @@ public final class JsonResponseUtil {
         JSONObject result = new JSONObject();
         result.put(JSON_ERRORCODE_NAME, 1);
         result.put(JSON_ERRORMSG_NAME, cause);
-        return "@" + result.toJSONString();
+        return  result.toJSONString();
     }
 
     public static String badResult(int errorCode,String cause) {
         JSONObject result = new JSONObject();
         result.put(JSON_ERRORCODE_NAME, errorCode);
         result.put(JSON_ERRORMSG_NAME, cause);
-        return "@" + result.toJSONString();
+        return  result.toJSONString();
     }
     public static String badResult(Integer code,String cause,int overcount) {
         JSONObject result = new JSONObject();
         result.put(JSON_ERRORCODE_NAME, code);
         result.put(JSON_ERRORMSG_NAME, cause);
         result.put(JSON_OVER_COUNT, overcount);
-        return "@" + result.toJSONString();
+        return  result.toJSONString();
     }
 
     public static String emptyResult(String cause) {
         JSONObject result = new JSONObject();
         result.put(JSON_ERRORCODE_NAME, 2);
         result.put(JSON_ERRORMSG_NAME, cause);
-        return "@" + result.toJSONString();
+        return  result.toJSONString();
     }
 
     public static String badResult(String cause, String callback) {
         JSONObject result = new JSONObject();
         result.put(JSON_ERRORCODE_NAME, 1);
         result.put(JSON_ERRORMSG_NAME, cause);
-        return "@" + callback + "(" + result.toJSONString() + ")";
+        return  callback + "(" + result.toJSONString() + ")";
     }
 
     public static String badResult(Map<String, String> cause) {
         JSONObject result = new JSONObject();
         result.put(JSON_ERRORCODE_NAME, 1);
         result.put(JSON_ERRORMSG_NAME, cause);
-        return "@" + result.toJSONString();
+        return  result.toJSONString();
     }
 
     public static String badResult(int errorCode, Object cause) {
         JSONObject result = new JSONObject();
         result.put(JSON_ERRORCODE_NAME, errorCode);
         result.put(JSON_ERRORMSG_NAME, cause);
-        return "@" + result.toJSONString();
+        return  result.toJSONString();
     }
 
     public static String ok() {
         JSONObject result = new JSONObject();
         result.put(JSON_ERRORCODE_NAME, 0);
         result.put(JSON_DATA_NAME, "成功");
-        return "@" + result.toString();
+        return  result.toString();
     }
 
     public static String okWithEmpty() {
         JSONObject result = new JSONObject();
         result.put(JSON_ERRORCODE_NAME, 0);
         result.put(JSON_DATA_NAME, Collections.emptyList());
-        return "@" + result.toString();
+        return  result.toString();
     }
 
     public static String ok(String key, Object value) {
         JSONObject result = new JSONObject();
         result.put(JSON_ERRORCODE_NAME, 0);
         result.put(JSON_DATA_NAME, ImmutableMap.of(key, value));
-        return "@" + result.toJSONString();
+        return  result.toJSONString();
     }
 
     public static String ok(Object object) {
         Map<String,Object> result = new HashMap<String, Object>();
         result.put(JSON_ERRORCODE_NAME, 0);
         result.put(JSON_DATA_NAME, object);
-        return "@" + JSON.toJSONString(result);
+        return  JSON.toJSONString(result);
     }
 
     public static String ok(Object object, Map<String, Object> params) {
@@ -111,7 +115,7 @@ public final class JsonResponseUtil {
                 result.put(String.valueOf(entry.getKey()), entry.getValue());
             }
         }
-        return "@" + result.toJSONString();
+        return  result.toJSONString();
     }
 
     public static String okWithPaginate(Object object, int pageTotal, int pageSize, int pageNo) {
@@ -121,7 +125,7 @@ public final class JsonResponseUtil {
         result.put("pageNo", pageNo);
         result.put(JSON_DATA_NAME, object);
         result.put(JSON_ERRORCODE_NAME, 0);
-        return "@" + result.toJSONString();
+        return  result.toJSONString();
     }
 
     @SuppressWarnings("rawtypes")
@@ -129,28 +133,28 @@ public final class JsonResponseUtil {
         JSONObject result = new JSONObject();
         result.put(JSON_DATA_NAME, list);
         result.put(JSON_ERRORCODE_NAME, 0);
-        return "@" + result.toJSONString();
+        return  result.toJSONString();
     }
 
     public static String jsonp(Object object, String callback) {
         JSONObject result = new JSONObject();
         result.put(JSON_ERRORCODE_NAME, 0);
         result.put(JSON_DATA_NAME, object);
-        return "@" + callback + "(" + result.toJSONString() + ")";
+        return  callback + "(" + result.toJSONString() + ")";
     }
 
     public static String ok(Map<String, Object> params) {
         JSONObject result = new JSONObject();
         result.put(JSON_ERRORCODE_NAME, 0);
         result.put(JSON_DATA_NAME, params);
-        return "@" + result.toJSONString();
+        return  result.toJSONString();
     }
 
     public static String ok(ImmutableMap<String, Object> params) {
         JSONObject result = new JSONObject();
         result.put(JSON_ERRORCODE_NAME, 0);
         result.put(JSON_DATA_NAME, params);
-        return "@" + result.toJSONString();
+        return  result.toJSONString();
     }
 
     public static <T> String okWithPaginate(List<T> list, int pageTotal, int pageSize, int pageNo) {
@@ -160,7 +164,7 @@ public final class JsonResponseUtil {
         result.put("pageNo", pageNo);
         result.put(JSON_ERRORCODE_NAME, 0);
         result.put(JSON_DATA_NAME, list);
-        return "@" + result.toJSONString();
+        return  result.toJSONString();
     }
 
     public static String okWithPaginate(Map<String, Object> params, int pageTotal, int pageSize, int pageNo) {
@@ -170,7 +174,7 @@ public final class JsonResponseUtil {
         result.put("pageNo", pageNo);
         result.put(JSON_ERRORCODE_NAME, 0);
         result.put(JSON_DATA_NAME, params);
-        return "@" + result.toJSONString();
+        return  result.toJSONString();
     }
 
     public static String okSupportJSONP(Object object, String fun) {
@@ -180,7 +184,7 @@ public final class JsonResponseUtil {
         JSONObject result = new JSONObject();
         result.put(JSON_ERRORCODE_NAME, 0);
         result.put(JSON_DATA_NAME, object);
-        return "@" + fun + "(" + result.toJSONString() + ")";
+        return  fun + "(" + result.toJSONString() + ")";
     }
 
     public static <T> String okSupportJSONPWithPaginate(List<T> list, String callback, Map<String, Object> params) {
@@ -198,7 +202,7 @@ public final class JsonResponseUtil {
                 result.put(String.valueOf(entry.getKey()), entry.getValue());
             }
         }
-        return "@" + callback + "(" + result.toJSONString() + ")";
+        return  callback + "(" + result.toJSONString() + ")";
     }
 
     public static String badResultSupportJSONP(String cause, String fun) {
@@ -208,7 +212,7 @@ public final class JsonResponseUtil {
         JSONObject result = new JSONObject();
         result.put(JSON_ERRORCODE_NAME, 1);
         result.put(JSON_ERRORMSG_NAME, cause);
-        return "@" + fun + "(" + result.toJSONString() + ")";
+        return  fun + "(" + result.toJSONString() + ")";
     }
 
     public static String okSupportEmptyWithJSONP(String fun) {
@@ -218,6 +222,7 @@ public final class JsonResponseUtil {
         JSONObject result = new JSONObject();
         result.put(JSON_ERRORCODE_NAME, 0);
         result.put(JSON_ERRORMSG_NAME, "success");
-        return "@" + fun + "(" + result.toString() + ")";
+        return  fun + "(" + result.toString() + ")";
     }
+    
 }

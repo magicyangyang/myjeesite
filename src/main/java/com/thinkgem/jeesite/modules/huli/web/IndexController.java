@@ -5,6 +5,10 @@ package com.thinkgem.jeesite.modules.huli.web;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -78,17 +82,20 @@ public class IndexController extends BaseController {
      * @return
      */
 	@RequestMapping("getWechatUser")
-    public 	@ResponseBody String getWechatUser(String uid, RedirectAttributes redirectAttributes){
-		logger.info("[getWechatUser] uid={}",uid);
+    public 	@ResponseBody String getWechatUser(String openid, RedirectAttributes redirectAttributes){
+		logger.info("[getWechatUser] openid={}",openid);
+		if(StringUtils.isBlank(openid)){
+    		return JsonResponseUtil.badResult("参数不能为空");
+    	}
     	try {
-    		FriendWechatLog res=friendWechatLogService.get(uid);
+    		FriendWechatLog res=friendWechatLogService.getByOpenid(openid);
         	if(null!=res){
         		return JsonResponseUtil.ok(res);
         	}else{
         		return JsonResponseUtil.badResult("无此记录");
         	}
 		} catch (Exception e) {
-			logger.info("[getWechatUser] uid={}|e={}",uid,e.getMessage(),e);
+			logger.info("[getWechatUser] openid={}|e={}",openid,e.getMessage(),e);
 		}
     	return JsonResponseUtil.badResult("系统繁忙,请稍候再试");
 }

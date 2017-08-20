@@ -41,6 +41,10 @@ public class FriendWechatLog extends DataEntity<FriendWechatLog> {
 	public FriendWechatLog(String id){
 		super(id);
 	}
+	
+	public FriendWechatLog(String openId,boolean j){
+		this.openid =openId;
+	}
 
 	public FriendWechatLog(User user) {
 		this.uid = null;

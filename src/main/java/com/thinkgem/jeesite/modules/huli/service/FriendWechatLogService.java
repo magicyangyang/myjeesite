@@ -6,6 +6,7 @@ package com.thinkgem.jeesite.modules.huli.service;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +26,13 @@ import com.thinkgem.jeesite.modules.huli.dao.FriendWechatLogDao;
 @Transactional(readOnly = true)
 public class FriendWechatLogService extends CrudService<FriendWechatLogDao, FriendWechatLog> {
 
+	/**
+	 * 持久层对象
+	 */
+	@Autowired
+	protected FriendWechatLogDao dao;
+	
+	
 	public FriendWechatLog get(String id) {
 		return super.get(id);
 	}
@@ -61,6 +69,10 @@ public class FriendWechatLogService extends CrudService<FriendWechatLogDao, Frie
 		}
 		res=get(wechatlog.getOpenid());
 		return res;
+	}
+
+	public FriendWechatLog getByOpenid(String openid) {
+		return dao.getByOpenid(openid);
 	}
 	
 }
