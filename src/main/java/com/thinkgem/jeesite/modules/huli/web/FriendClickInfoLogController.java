@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.huli.web;
 
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -28,11 +30,39 @@ import com.thinkgem.jeesite.modules.huli.utils.JsonResponseUtil;
  * @version 2017-08-20
  */
 @Controller
-@RequestMapping(value = "${adminPath}/huli/friendClickInfoLog")
+@RequestMapping(value = "${adminPath}/huli/clickinfo")
 public class FriendClickInfoLogController extends BaseController {
 
 	@Autowired
 	private FriendClickInfoLogService friendClickInfoLogService;
+	
+	@RequestMapping(value = "")
+	@ResponseBody
+	public String clickinfo(FriendClickInfoLog viewclickLog, Model model, RedirectAttributes redirectAttributes) {
+		 if (viewclickLog == null || StringUtils.isBlank(viewclickLog.getOpenid())) {
+	            return JsonResponseUtil.badResult("openid不能为空");
+	        }
+	    logger.info("mobile={}|type={}result={}|remark={}|openid={}", viewclickLog.getMobile(), viewclickLog.getType(), viewclickLog.getResult(), viewclickLog.getRemark(), viewclickLog.getOpenid());
+		try {
+			Date startTime = new Date();
+			FriendClickInfoLog clickLog = new FriendClickInfoLog();
+			clickLog.setCreateTime(startTime);
+			clickLog.setUpdateTime(startTime);
+			clickLog.setMobile(viewclickLog.getMobile()==null?"":viewclickLog.getMobile());
+			clickLog.setType(viewclickLog.getType());
+			clickLog.setRemark(viewclickLog.getRemark()==null?"":viewclickLog.getMobile());
+			clickLog.setResult(viewclickLog.getResult()==null?"1":viewclickLog.getMobile());
+			clickLog.setOpenid(viewclickLog.getOpenid());
+			clickLog.setCampaign(0);
+	    	logger.info("save log mobile:{},openid:{}",viewclickLog.getOpenid(),viewclickLog.getOpenid());
+			friendClickInfoLogService.save(clickLog);
+		} catch (Exception e) {
+			 return JsonResponseUtil.badResult(e.getMessage());
+		}
+		return JsonResponseUtil.ok("保存日志保存成功成功");
+	}
+	
+	
 	
 	@ModelAttribute
 	public FriendClickInfoLog get(@RequestParam(required=false) String id) {
@@ -46,7 +76,7 @@ public class FriendClickInfoLogController extends BaseController {
 		return entity;
 	}
 	
-	@RequestMapping(value = {"list", ""})
+	@RequestMapping(value = {"list"})
 	@ResponseBody
 	public String list(FriendClickInfoLog friendClickInfoLog, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<FriendClickInfoLog> page = friendClickInfoLogService.findPage(new Page<FriendClickInfoLog>(request, response), friendClickInfoLog); 

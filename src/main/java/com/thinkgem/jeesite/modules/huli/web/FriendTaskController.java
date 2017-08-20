@@ -99,48 +99,48 @@ public class FriendTaskController extends BaseController {
 	public String save(FriendTask friendTask, Integer question, Integer answer, Model model, RedirectAttributes redirectAttributes) {
 		// 1. 校验
 		if(StringUtils.isBlank(friendTask.getInviteOpenId())){
-			return JsonResponseUtil.badResult(1, "发起人openid不能为空！");
+			return JsonResponseUtil.badResult("发起人openid不能为空！");
 		}
 		
 		if(StringUtils.isBlank(friendTask.getTaskOpenId())){
-			return JsonResponseUtil.badResult(1, "被邀请人openid不能为空！");
+			return JsonResponseUtil.badResult("被邀请人openid不能为空！");
 		}
 		
 		if(question == null || question<1 || question>3){
-			return JsonResponseUtil.badResult(1, "question参数传入错误！");
+			return JsonResponseUtil.badResult("question参数传入错误！");
 		}
 		
 		if(answer == null || answer<0 || answer>1){
-			return JsonResponseUtil.badResult(1, "answer参数传入错误！");
+			return JsonResponseUtil.badResult("answer参数传入错误！");
 		}
 		
 		if(friendTask.getStatus() != null && friendTask.getStatus() == 1){
-			return JsonResponseUtil.badResult(1, "答题已结束！");
+			return JsonResponseUtil.badResult("答题已结束！");
 		}
 		
 		if(question == 1){
 			if(friendTask.getId() != null){
-				return JsonResponseUtil.badResult(1, "第一题已回答，无法再保存第一题答案！");
+				return JsonResponseUtil.badResult("第一题已回答，无法再保存第一题答案！");
 			}
 		}else if(question == 2){
 			if(friendTask.getId() == null || friendTask.getAnswerA()==null){
-				return JsonResponseUtil.badResult(1, "第一题未回答，无法保存第二题答案！");
+				return JsonResponseUtil.badResult("第一题未回答，无法保存第二题答案！");
 			}else if( friendTask.getAnswerA() == 0){
-				return JsonResponseUtil.badResult(1, "第一题回答错误，无法保存第二题答案！");
+				return JsonResponseUtil.badResult("第一题回答错误，无法保存第二题答案！");
 			}else if( friendTask.getAnswerB()!=null && friendTask.getAnswerB() == 1){
-				return JsonResponseUtil.badResult(1, "第二题已回答，无法保存第二题答案！");
+				return JsonResponseUtil.badResult("第二题已回答，无法保存第二题答案！");
 			}
 		}else if(question == 3){
 			if(friendTask.getId() == null || friendTask.getAnswerA()==null){
-				return JsonResponseUtil.badResult(1, "第一题未回答，无法保存第三题答案！");
+				return JsonResponseUtil.badResult("第一题未回答，无法保存第三题答案！");
 			}else if(friendTask.getAnswerA() == 0){
-				return JsonResponseUtil.badResult(1, "第一题回答错误，无法保存第三题答案！");
+				return JsonResponseUtil.badResult("第一题回答错误，无法保存第三题答案！");
 			}else if(friendTask.getAnswerB()==null){
-				return JsonResponseUtil.badResult(1, "第二题未回答，无法保存第三题答案！");
+				return JsonResponseUtil.badResult("第二题未回答，无法保存第三题答案！");
 			}else if(friendTask.getAnswerB() == 0){
-				return JsonResponseUtil.badResult(1, "第二题回答错误，无法保存第三题答案！");
+				return JsonResponseUtil.badResult("第二题回答错误，无法保存第三题答案！");
 			}else if( friendTask.getAnswerC()!=null && friendTask.getAnswerC() == 1){
-				return JsonResponseUtil.badResult(1, "第三题已回答，无法保存第三题答案！");
+				return JsonResponseUtil.badResult("第三题已回答，无法保存第三题答案！");
 			}
 		}
 		
@@ -155,7 +155,7 @@ public class FriendTaskController extends BaseController {
 				friendTask.setTaskHeadimgurl(wechatLog.getHeadimgurl());
 			} catch (Exception e) {
 				logger.error("保存答题结果时，获取被邀请人信息失败！", e);
-				return JsonResponseUtil.badResult(1, "保存答题结果时，获取被邀请人信息失败！");
+				return JsonResponseUtil.badResult("保存答题结果时，获取被邀请人信息失败！");
 			}
 		}else if(question == 2){
 			friendTask.setAnswerB(answer);
@@ -172,7 +172,7 @@ public class FriendTaskController extends BaseController {
 			friendTaskService.save(friendTask);
 		} catch (Exception e) {
 			logger.error("保存答题结果失败！", e);
-			return JsonResponseUtil.badResult(1, "保存答题结果失败！");
+			return JsonResponseUtil.badResult("保存答题结果失败！");
 		}
 		
 		// 4. 返回结果

@@ -113,5 +113,6 @@ public class FriendClickInfoLog extends DataEntity<FriendClickInfoLog> {
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
+	 
 	
 }
