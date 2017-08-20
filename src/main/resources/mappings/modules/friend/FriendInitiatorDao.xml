@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.friend.dao.FriendInitiatorDao">
+    
+	<sql id="friendInitiatorColumns">
+		a.id AS "id",
+		a.openid AS "openid",
+		a.status AS "status",
+		a.is_sendmoney AS "isSendmoney",
+		a.invitee_num AS "inviteeNum",
+		a.score AS "score",
+		a.code AS "code",
+		a.remark AS "remark",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime"
+	</sql>
+	
+	<sql id="friendInitiatorJoins">
+	</sql>
+    
+	<select id="get" resultType="FriendInitiator">
+		SELECT 
+			<include refid="friendInitiatorColumns"/>
+		FROM friend_initiator a
+		<include refid="friendInitiatorJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="FriendInitiator">
+		SELECT 
+			<include refid="friendInitiatorColumns"/>
+		FROM friend_initiator a
+		<include refid="friendInitiatorJoins"/>
+		<where>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="FriendInitiator">
+		SELECT 
+			<include refid="friendInitiatorColumns"/>
+		FROM friend_initiator a
+		<include refid="friendInitiatorJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO friend_initiator(
+			id,
+			openid,
+			status,
+			is_sendmoney,
+			invitee_num,
+			score,
+			code,
+			remark,
+			create_time,
+			update_time
+		) VALUES (
+			#{id},
+			#{openid},
+			#{status},
+			#{isSendmoney},
+			#{inviteeNum},
+			#{score},
+			#{code},
+			#{remark},
+			#{createTime},
+			#{updateTime}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE friend_initiator SET 	
+			openid = #{openid},
+			status = #{status},
+			is_sendmoney = #{isSendmoney},
+			invitee_num = #{inviteeNum},
+			score = #{score},
+			code = #{code},
+			remark = #{remark},
+			create_time = #{createTime},
+			update_time = #{updateTime}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM friend_initiator
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.friend.dao.FriendAnswerDao">
+    
+	<sql id="friendAnswerColumns">
+		a.id AS "id",
+		a.invitee_id AS "inviteeId",
+		a.initiator_open_id AS "initiatorOpenId",
+		a.invitee_open_id AS "inviteeOpenId",
+		a.question_a AS "questionA",
+		a.answer_a AS "answerA",
+		a.question_b AS "questionB",
+		a.answer_b AS "answerB",
+		a.question_c AS "questionC",
+		a.answer_c AS "answerC",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime"
+	</sql>
+	
+	<sql id="friendAnswerJoins">
+		LEFT JOIN friend_invitee b ON b.id = a.invitee_id
+	</sql>
+    
+	<select id="get" resultType="FriendAnswer">
+		SELECT 
+			<include refid="friendAnswerColumns"/>
+		FROM friend_answer a
+		<include refid="friendAnswerJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="FriendAnswer">
+		SELECT 
+			<include refid="friendAnswerColumns"/>
+		FROM friend_answer a
+		<include refid="friendAnswerJoins"/>
+		<where>
+			
+			<if test="inviteeId != null and inviteeId != ''">
+				AND a.invitee_id = #{inviteeId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="FriendAnswer">
+		SELECT 
+			<include refid="friendAnswerColumns"/>
+		FROM friend_answer a
+		<include refid="friendAnswerJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO friend_answer(
+			id,
+			invitee_id,
+			initiator_open_id,
+			invitee_open_id,
+			question_a,
+			answer_a,
+			question_b,
+			answer_b,
+			question_c,
+			answer_c,
+			create_time,
+			update_time
+		) VALUES (
+			#{id},
+			#{inviteeId},
+			#{initiatorOpenId},
+			#{inviteeOpenId},
+			#{questionA},
+			#{answerA},
+			#{questionB},
+			#{answerB},
+			#{questionC},
+			#{answerC},
+			#{createTime},
+			#{updateTime}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE friend_answer SET 	
+			invitee_id = #{inviteeId},
+			initiator_open_id = #{initiatorOpenId},
+			invitee_open_id = #{inviteeOpenId},
+			question_a = #{questionA},
+			answer_a = #{answerA},
+			question_b = #{questionB},
+			answer_b = #{answerB},
+			question_c = #{questionC},
+			answer_c = #{answerC},
+			create_time = #{createTime},
+			update_time = #{updateTime}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM friend_answer
+		<choose>
+			<when test="id !=null and id != ''">
+				WHERE id = #{id}
+			</when>
+			<otherwise>
+				WHERE invitee_id = #{inviteeId}
+			</otherwise>
+		</choose>
+	</update>
+	
+</mapper>

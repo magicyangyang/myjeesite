@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.friend.dao.FriendInviteeDao">
+    
+	<sql id="friendInviteeColumns">
+		a.id AS "id",
+		a.initiator_id AS "initiatorId",
+		a.initiator_open_id AS "initiatorOpenId",
+		a.openid AS "openid",
+		a.nickname AS "nickname",
+		a.headimgurl AS "headimgurl",
+		a.score AS "score",
+		a.status AS "status",
+		a.remark AS "remark",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime"
+	</sql>
+	
+	<sql id="friendInviteeJoins">
+	</sql>
+    
+	<select id="get" resultType="FriendInvitee">
+		SELECT 
+			<include refid="friendInviteeColumns"/>
+		FROM friend_invitee a
+		<include refid="friendInviteeJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="FriendInvitee">
+		SELECT 
+			<include refid="friendInviteeColumns"/>
+		FROM friend_invitee a
+		<include refid="friendInviteeJoins"/>
+		<where>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="FriendInvitee">
+		SELECT 
+			<include refid="friendInviteeColumns"/>
+		FROM friend_invitee a
+		<include refid="friendInviteeJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO friend_invitee(
+			id,
+			initiator_id,
+			initiator_open_id,
+			openid,
+			nickname,
+			headimgurl,
+			score,
+			status,
+			remark,
+			create_time,
+			update_time
+		) VALUES (
+			#{id},
+			#{initiatorId},
+			#{initiatorOpenId},
+			#{openid},
+			#{nickname},
+			#{headimgurl},
+			#{score},
+			#{status},
+			#{remark},
+			#{createTime},
+			#{updateTime}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE friend_invitee SET 	
+			initiator_id = #{initiatorId},
+			initiator_open_id = #{initiatorOpenId},
+			openid = #{openid},
+			nickname = #{nickname},
+			headimgurl = #{headimgurl},
+			score = #{score},
+			status = #{status},
+			remark = #{remark},
+			create_time = #{createTime},
+			update_time = #{updateTime}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM friend_invitee
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
