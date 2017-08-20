@@ -5,15 +5,13 @@ package com.thinkgem.jeesite.modules.huli.web;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.HashMap;
-import java.util.Map;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.alibaba.fastjson.JSONObject;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
@@ -76,7 +74,31 @@ public class IndexController extends BaseController {
 			logger.info("[wechatuser] userjson={}|e={}",userjson,e.getMessage(),e);
 		}
     	return JsonResponseUtil.badResult("系统繁忙,请稍候再试");
-}
+    }
+	
+	/**
+     * 存储用户的微信账号信息数据
+     * @return
+     */
+	@RequestMapping("saveWechatuser")
+    public 	@ResponseBody String saveWechatuser(FriendWechatLog wechatlog, RedirectAttributes redirectAttributes){
+    	if(null==wechatlog||StringUtils.isBlank(wechatlog.getOpenid())){
+    		return JsonResponseUtil.badResult("参数不能为空");
+    	}
+    	logger.info("[saveWechatuser] wechatlog={}",wechatlog.toString());
+    	try {
+    		FriendWechatLog res=friendWechatLogService.saveFriendWechatLog(wechatlog);
+        	if(null!=res){
+        		return JsonResponseUtil.ok(res);
+        	}else{
+        		return JsonResponseUtil.badResult("保存失败");
+        	}
+		} catch (Exception e) {
+			logger.info("[saveWechatuser] wechatlog={}|e={}",wechatlog,e.getMessage(),e);
+		}
+    	return JsonResponseUtil.badResult("系统繁忙,请稍候再试");
+    }
+	
 	/**
      * 存储用户的微信账号信息数据
      * @return

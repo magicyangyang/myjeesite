@@ -70,6 +70,18 @@ public class FriendWechatLogService extends CrudService<FriendWechatLogDao, Frie
 		res=get(wechatlog.getOpenid());
 		return res;
 	}
+	
+	public FriendWechatLog saveFriendWechatLog(FriendWechatLog wechatlog) {
+		FriendWechatLog res = get(wechatlog.getOpenid());
+		if(null!=res){
+			 return res;
+		}else{
+			super.save(wechatlog);
+		}
+		res=get(wechatlog.getOpenid());
+		return res;
+	}
+	
 
 	public FriendWechatLog getByOpenid(String openid) {
 		return dao.getByOpenid(openid);
