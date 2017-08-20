@@ -42,6 +42,12 @@ public abstract class BaseEntity<T> implements Serializable {
 	protected User currentUser;
 	
 	/**
+	 * 当前数据库名称
+	 */
+	@JSONField(serialize=false)
+	protected String dbName;
+	
+	/**
 	 * 当前实体分页对象
 	 */
 	@JSONField(serialize=false)
@@ -52,6 +58,9 @@ public abstract class BaseEntity<T> implements Serializable {
 	 */
 	@JSONField(serialize=false)
 	protected Map<String, String> sqlMap;
+	
+	@JSONField(serialize=false)
+	protected Global global;
 	
 	/**
 	 * 是否是新记录（默认：false），调用setIsNewRecord()设置新记录，使用自定义ID。

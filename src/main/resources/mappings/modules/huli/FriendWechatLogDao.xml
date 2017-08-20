@@ -69,7 +69,6 @@
 	
 	<insert id="insert">
 		INSERT INTO friend_wechat_log(
-			id,
 			uid,
 			nick_name,
 			openid,
@@ -87,7 +86,6 @@
 			group_id,
 			login_time
 		) VALUES (
-			#{id},
 			#{uid},
 			#{nickName},
 			#{openid},

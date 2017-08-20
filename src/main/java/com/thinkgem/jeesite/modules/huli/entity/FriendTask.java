@@ -6,6 +6,8 @@ package com.thinkgem.jeesite.modules.huli.entity;
 import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+
+import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
@@ -30,7 +32,9 @@ public class FriendTask extends DataEntity<FriendTask> {
 	private Integer answerC;		// 答案3
 	private Integer score;		// 当前答完题目所得分数(每道题1分)
 	private Integer status;		// 答题状态,看是否已经结束。0为正在答题，1为结束(结束代表从abc三题顺序answer为0情况，若c题为1也是结束)
+	@JSONField(format = "yyyy-MM-dd HH:mm:ss")
 	private Date createTime;		// 创建时间
+	@JSONField(format = "yyyy-MM-dd HH:mm:ss")
 	private Date updateTime;		// 修改时间
 	
 	public FriendTask() {

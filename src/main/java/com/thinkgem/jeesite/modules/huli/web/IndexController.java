@@ -5,6 +5,7 @@ package com.thinkgem.jeesite.modules.huli.web;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,9 +16,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.alibaba.fastjson.JSONObject;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.huli.entity.FriendShip;
+import com.thinkgem.jeesite.modules.huli.entity.FriendTask;
 import com.thinkgem.jeesite.modules.huli.entity.FriendWechatLog;
 import com.thinkgem.jeesite.modules.huli.entity.User;
 import com.thinkgem.jeesite.modules.huli.service.FriendShipService;
+import com.thinkgem.jeesite.modules.huli.service.FriendTaskService;
 import com.thinkgem.jeesite.modules.huli.service.FriendWechatLogService;
 import com.thinkgem.jeesite.modules.huli.utils.JsonResponseUtil;
 
@@ -37,6 +41,10 @@ public class IndexController extends BaseController {
 	
 	@Autowired
 	private FriendShipService friendShipService;
+	
+
+	@Autowired
+	private FriendTaskService friendTaskService;
 	
 	/**
      * 存储用户的微信账号信息数据
@@ -137,11 +145,11 @@ public class IndexController extends BaseController {
     	}
     	FriendWechatLog taskUser = friendWechatLogService.getByOpenid(taskOpenid);
 		if(null==taskUser){
-			return JsonResponseUtil.badResult("请先关注狐狸慧赚公众号");
+			return JsonResponseUtil.badResult("被邀请人,请先关注狐狸慧赚公众号");
 		}
 		FriendWechatLog inviteUser = friendWechatLogService.getByOpenid(inviteOpenid);
 		if(null==inviteUser){
-			return JsonResponseUtil.badResult("请先关注狐狸慧赚公众号");
+			return JsonResponseUtil.badResult("邀请人,请先关注狐狸慧赚公众号");
 		}
     	try {
     		String res=friendShipService.saveShip(taskUser,inviteUser);
@@ -152,6 +160,34 @@ public class IndexController extends BaseController {
         	}
 		} catch (Exception e) {
 			logger.info("[binderror] taskOpenid={}|inviteOpenid={}",taskOpenid,inviteOpenid,e);
+		}
+    	return JsonResponseUtil.badResult("系统繁忙,请稍候再试");
+    }
+	
+	
+	/**
+     * 存储用户的微信账号信息数据
+     * @return
+     */
+	@RequestMapping("task_info")
+    public 	@ResponseBody String task_info(String openid,RedirectAttributes redirectAttributes){
+		logger.info("[task_info] openid={}",openid);
+		if(StringUtils.isBlank(openid)){
+    		return JsonResponseUtil.badResult("参数不能为空");
+    	}
+    	FriendWechatLog taskUser = friendWechatLogService.getByOpenid(openid);
+		if(null==taskUser){
+			return JsonResponseUtil.badResult("你好,请先关注狐狸慧赚公众号");
+		}
+    	try {
+    		List<FriendTask> tasklist = friendTaskService.getTasksByInviteOpenid(openid);
+        	if(null!=tasklist){
+        		return JsonResponseUtil.ok(tasklist);
+        	}else{
+        		return JsonResponseUtil.badResult(2,"太没面子了，还没有人帮你赚钱");
+        	}
+		} catch (Exception e) {
+			logger.info("[binderror] inviteOpenid={}|e={}",openid,e.getMessage(),e);
 		}
     	return JsonResponseUtil.badResult("系统繁忙,请稍候再试");
     }

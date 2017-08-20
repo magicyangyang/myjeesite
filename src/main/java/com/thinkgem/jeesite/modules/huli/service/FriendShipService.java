@@ -70,7 +70,7 @@ public class FriendShipService extends CrudService<FriendShipDao, FriendShip> {
 			}
 			 return null;
 		 }
-		return "已经存在邀请管理";
+		return "已经存在邀请关系";
 	}
 	
 	public List<FriendShip> getShipByTaskOpenid(String openid) {

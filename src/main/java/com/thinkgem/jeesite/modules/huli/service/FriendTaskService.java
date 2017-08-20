@@ -5,6 +5,7 @@ package com.thinkgem.jeesite.modules.huli.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,13 @@ import com.thinkgem.jeesite.modules.huli.dao.FriendTaskDao;
 @Transactional(readOnly = true)
 public class FriendTaskService extends CrudService<FriendTaskDao, FriendTask> {
 
+	
+	/**
+	 * 持久层对象
+	 */
+	@Autowired
+	protected FriendTaskDao dao;
+	
 	public FriendTask get(String id) {
 		return super.get(id);
 	}
@@ -42,6 +50,10 @@ public class FriendTaskService extends CrudService<FriendTaskDao, FriendTask> {
 	@Transactional(readOnly = false)
 	public void delete(FriendTask friendTask) {
 		super.delete(friendTask);
+	}
+
+	public List<FriendTask> getTasksByInviteOpenid(String inviteOpenid) {
+		return dao.getTasksByInviteOpenid(inviteOpenid);
 	}
 	
 }

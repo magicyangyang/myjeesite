@@ -32,6 +32,7 @@ public class FriendWechatLog extends DataEntity<FriendWechatLog> {
 	private String unionId;		// 只有在用户将公众号绑定到微信开放平台帐号后，才会出现该字段
 	private String remark;		// 公众号运营者对粉丝的备注，公众号运营者可在微信公众平台用户管理界面对粉丝添加备注
 	private Integer groupId;		// 用户所在的分组ID
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date loginTime;		// 登录时间
 	
 	public FriendWechatLog() {

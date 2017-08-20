@@ -103,7 +103,7 @@
 			<include refid="friendShipColumns"/>
 		FROM friend_ship a
 		<include refid="friendShipJoins"/>
-		WHERE a.task_open_id = #{taskOpenid} and a.invite_open_id = #{inviteOpenid} 
+		WHERE a.task_open_id = #{taskOpenid} and a.invite_open_id = #{inviteOpenid} order by update_time desc limit 1
 	</select>
 	
 	<select id="getShipByTaskOpenid" resultType="FriendShip">
@@ -119,7 +119,7 @@
 			<include refid="friendShipColumns"/>
 		FROM friend_ship a
 		<include refid="friendShipJoins"/>
-		WHERE a.invite_open_id = #{openid}
+		WHERE a.invite_open_id = #{openid} 
 	</select>
 		 
 </mapper>

@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.huli.dao;
 
+import java.util.List;
+
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.huli.entity.FriendTask;
@@ -14,5 +16,7 @@ import com.thinkgem.jeesite.modules.huli.entity.FriendTask;
  */
 @MyBatisDao
 public interface FriendTaskDao extends CrudDao<FriendTask> {
+
+	List<FriendTask> getTasksByInviteOpenid(String inviteOpenid);
 	
 }

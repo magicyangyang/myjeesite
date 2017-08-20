@@ -125,4 +125,13 @@
 		WHERE id = #{id}
 	</update>
 	
+	<select id="getTasksByInviteOpenid" resultType="FriendTask">
+		SELECT 
+			<include refid="friendTaskColumns"/>
+		FROM friend_task a
+		<include refid="friendTaskJoins"/>
+		WHERE a.invite_open_id = #{inviteOpenid} and status =1  order by update_time asc limit 3;
+	</select>
+	
+	
 </mapper>
