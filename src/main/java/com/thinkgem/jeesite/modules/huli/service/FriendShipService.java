@@ -5,12 +5,14 @@ package com.thinkgem.jeesite.modules.huli.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.modules.huli.entity.FriendShip;
+import com.thinkgem.jeesite.modules.huli.entity.FriendWechatLog;
 import com.thinkgem.jeesite.modules.huli.dao.FriendShipDao;
 
 /**
@@ -22,6 +24,13 @@ import com.thinkgem.jeesite.modules.huli.dao.FriendShipDao;
 @Transactional(readOnly = true)
 public class FriendShipService extends CrudService<FriendShipDao, FriendShip> {
 
+	/**
+	 * 持久层对象
+	 */
+	@Autowired
+	protected FriendShipDao dao;
+	
+	
 	public FriendShip get(String id) {
 		return super.get(id);
 	}
@@ -43,5 +52,33 @@ public class FriendShipService extends CrudService<FriendShipDao, FriendShip> {
 	public void delete(FriendShip friendShip) {
 		super.delete(friendShip);
 	}
+
+	public String saveShip(FriendWechatLog taskUser, FriendWechatLog inviteUser) {
+		 FriendShip relationShip = dao.getShipByOpenid(taskUser.getOpenid(),inviteUser.getOpenid());
+		 if(null==relationShip){
+			 FriendShip friendShip = new FriendShip();
+			 friendShip.setInviteOpenId(inviteUser.getOpenid());
+			 friendShip.setTaskOpenId(taskUser.getOpenid());
+			 friendShip.setTaskHeadimgurl(taskUser.getHeadimgurl());
+			 friendShip.setTaskNickname(taskUser.getNickName());
+			 friendShip.setRemark("");
+			 try {
+				 save(friendShip);
+			} catch (Exception e) {
+				logger.error(e.getMessage(),e);
+				return e.getMessage();
+			}
+			 return null;
+		 }
+		return "已经存在邀请管理";
+	}
+	
+	public List<FriendShip> getShipByTaskOpenid(String openid) {
+		return dao.getShipByTaskOpenid(openid);
+	}
+	public List<FriendShip> getShipByInviteOpenid(String openid) {
+		return dao.getShipByInviteOpenid(openid);
+	}
+	
 	
 }

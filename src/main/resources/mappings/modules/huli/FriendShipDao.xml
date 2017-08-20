@@ -97,4 +97,29 @@
 		WHERE id = #{id}
 	</update>
 	
+	
+	<select id="getShipByOpenid" resultType="FriendShip">
+		SELECT 
+			<include refid="friendShipColumns"/>
+		FROM friend_ship a
+		<include refid="friendShipJoins"/>
+		WHERE a.task_open_id = #{taskOpenid} and a.invite_open_id = #{inviteOpenid} 
+	</select>
+	
+	<select id="getShipByTaskOpenid" resultType="FriendShip">
+		SELECT 
+			<include refid="friendShipColumns"/>
+		FROM friend_ship a
+		<include refid="friendShipJoins"/>
+		WHERE a.task_open_id = #{openid}
+	</select>
+	
+	<select id="getShipByInviteOpenid" resultType="FriendShip">
+		SELECT 
+			<include refid="friendShipColumns"/>
+		FROM friend_ship a
+		<include refid="friendShipJoins"/>
+		WHERE a.invite_open_id = #{openid}
+	</select>
+		 
 </mapper>

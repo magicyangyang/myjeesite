@@ -17,6 +17,7 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.huli.entity.FriendWechatLog;
 import com.thinkgem.jeesite.modules.huli.entity.User;
+import com.thinkgem.jeesite.modules.huli.service.FriendShipService;
 import com.thinkgem.jeesite.modules.huli.service.FriendWechatLogService;
 import com.thinkgem.jeesite.modules.huli.utils.JsonResponseUtil;
 
@@ -33,6 +34,9 @@ public class IndexController extends BaseController {
 
 	@Autowired
 	private FriendWechatLogService friendWechatLogService;
+	
+	@Autowired
+	private FriendShipService friendShipService;
 	
 	/**
      * 存储用户的微信账号信息数据
@@ -71,7 +75,7 @@ public class IndexController extends BaseController {
         		return JsonResponseUtil.badResult("保存失败");
         	}
 		} catch (Exception e) {
-			logger.info("[wechatuser] userjson={}|e={}",userjson,e.getMessage(),e);
+			logger.info("[wechatusererror] userjson={}|e={}",userjson,e.getMessage(),e);
 		}
     	return JsonResponseUtil.badResult("系统繁忙,请稍候再试");
     }
@@ -94,7 +98,7 @@ public class IndexController extends BaseController {
         		return JsonResponseUtil.badResult("保存失败");
         	}
 		} catch (Exception e) {
-			logger.info("[saveWechatuser] wechatlog={}|e={}",wechatlog,e.getMessage(),e);
+			logger.info("[saveWechatusererror] wechatlog={}|e={}",wechatlog,e.getMessage(),e);
 		}
     	return JsonResponseUtil.badResult("系统繁忙,请稍候再试");
     }
@@ -117,10 +121,39 @@ public class IndexController extends BaseController {
         		return JsonResponseUtil.badResult("无此记录");
         	}
 		} catch (Exception e) {
-			logger.info("[getWechatUser] openid={}|e={}",openid,e.getMessage(),e);
+			logger.info("[getWechatUsererror] openid={}|e={}",openid,e.getMessage(),e);
 		}
     	return JsonResponseUtil.badResult("系统繁忙,请稍候再试");
 }
-	
+	/**
+     * 存储用户的微信账号信息数据
+     * @return
+     */
+	@RequestMapping("bind")
+    public 	@ResponseBody String bind(String taskOpenid,String  inviteOpenid,RedirectAttributes redirectAttributes){
+		logger.info("[bind] taskOpenid={}|inviteOpenid={}",taskOpenid,inviteOpenid);
+    	if(StringUtils.isBlank(taskOpenid)||StringUtils.isBlank(inviteOpenid)){
+    		return JsonResponseUtil.badResult("参数不能为空");
+    	}
+    	FriendWechatLog taskUser = friendWechatLogService.getByOpenid(taskOpenid);
+		if(null==taskUser){
+			return JsonResponseUtil.badResult("请先关注狐狸慧赚公众号");
+		}
+		FriendWechatLog inviteUser = friendWechatLogService.getByOpenid(inviteOpenid);
+		if(null==inviteUser){
+			return JsonResponseUtil.badResult("请先关注狐狸慧赚公众号");
+		}
+    	try {
+    		String res=friendShipService.saveShip(taskUser,inviteUser);
+        	if(null!=res){
+        		return JsonResponseUtil.ok("保存成功");
+        	}else{
+        		return JsonResponseUtil.badResult(res);
+        	}
+		} catch (Exception e) {
+			logger.info("[binderror] taskOpenid={}|inviteOpenid={}",taskOpenid,inviteOpenid,e);
+		}
+    	return JsonResponseUtil.badResult("系统繁忙,请稍候再试");
+    }
 	
 }
