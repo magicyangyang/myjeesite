@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.huli.dao.FriendClickInfoLogDao">
+    
+	<sql id="friendClickInfoLogColumns">
+		a.id AS "id",
+		a.openid AS "openid",
+		a.uid AS "uid",
+		a.mobile AS "mobile",
+		a.type AS "type",
+		a.result AS "result",
+		a.remark AS "remark",
+		a.campaign AS "campaign",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime"
+	</sql>
+	
+	<sql id="friendClickInfoLogJoins">
+	</sql>
+    
+	<select id="get" resultType="FriendClickInfoLog">
+		SELECT 
+			<include refid="friendClickInfoLogColumns"/>
+		FROM friend_click_info_log a
+		<include refid="friendClickInfoLogJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="FriendClickInfoLog">
+		SELECT 
+			<include refid="friendClickInfoLogColumns"/>
+		FROM friend_click_info_log a
+		<include refid="friendClickInfoLogJoins"/>
+		<where>
+			
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="openid != null and openid != ''">
+				AND a.openid = #{openid}
+			</if>
+			<if test="uid != null and uid != ''">
+				AND a.uid = #{uid}
+			</if>
+			<if test="mobile != null and mobile != ''">
+				AND a.mobile = #{mobile}
+			</if>
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>
+			<if test="result != null and result != ''">
+				AND a.result = #{result}
+			</if>
+			<if test="remark != null and remark != ''">
+				AND a.remark = #{remark}
+			</if>
+			<if test="campaign != null and campaign != ''">
+				AND a.campaign = #{campaign}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				AND a.create_time = #{createTime}
+			</if>
+			<if test="updateTime != null and updateTime != ''">
+				AND a.update_time = #{updateTime}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="FriendClickInfoLog">
+		SELECT 
+			<include refid="friendClickInfoLogColumns"/>
+		FROM friend_click_info_log a
+		<include refid="friendClickInfoLogJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO friend_click_info_log(
+			id,
+			openid,
+			uid,
+			mobile,
+			type,
+			result,
+			remark,
+			campaign,
+			create_time,
+			update_time
+		) VALUES (
+			#{id},
+			#{openid},
+			#{uid},
+			#{mobile},
+			#{type},
+			#{result},
+			#{remark},
+			#{campaign},
+			#{createTime},
+			#{updateTime}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE friend_click_info_log SET 	
+			openid = #{openid},
+			uid = #{uid},
+			mobile = #{mobile},
+			type = #{type},
+			result = #{result},
+			remark = #{remark},
+			campaign = #{campaign},
+			create_time = #{createTime},
+			update_time = #{updateTime}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM friend_click_info_log
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.huli.dao.FriendShareLogDao">
+    
+	<sql id="friendShareLogColumns">
+		a.id AS "id",
+		a.uid AS "uid",
+		a.opt_time AS "optTime",
+		a.type AS "type",
+		a.url AS "url",
+		a.date_int AS "dateInt",
+		a.share_result AS "shareResult",
+		a.come_from AS "comeFrom",
+		a.campaign AS "campaign",
+		a.module AS "module",
+		a.remark AS "remark",
+		a.openid AS "openid"
+	</sql>
+	
+	<sql id="friendShareLogJoins">
+	</sql>
+    
+	<select id="get" resultType="FriendShareLog">
+		SELECT 
+			<include refid="friendShareLogColumns"/>
+		FROM friend_share_log a
+		<include refid="friendShareLogJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="FriendShareLog">
+		SELECT 
+			<include refid="friendShareLogColumns"/>
+		FROM friend_share_log a
+		<include refid="friendShareLogJoins"/>
+		<where>
+			
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="uid != null and uid != ''">
+				AND a.uid = #{uid}
+			</if>
+			<if test="optTime != null and optTime != ''">
+				AND a.opt_time = #{optTime}
+			</if>
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>
+			<if test="url != null and url != ''">
+				AND a.url = #{url}
+			</if>
+			<if test="dateInt != null and dateInt != ''">
+				AND a.date_int = #{dateInt}
+			</if>
+			<if test="shareResult != null and shareResult != ''">
+				AND a.share_result = #{shareResult}
+			</if>
+			<if test="comeFrom != null and comeFrom != ''">
+				AND a.come_from = #{comeFrom}
+			</if>
+			<if test="campaign != null and campaign != ''">
+				AND a.campaign = #{campaign}
+			</if>
+			<if test="module != null and module != ''">
+				AND a.module = #{module}
+			</if>
+			<if test="remark != null and remark != ''">
+				AND a.remark = #{remark}
+			</if>
+			<if test="openid != null and openid != ''">
+				AND a.openid = #{openid}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="FriendShareLog">
+		SELECT 
+			<include refid="friendShareLogColumns"/>
+		FROM friend_share_log a
+		<include refid="friendShareLogJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO friend_share_log(
+			id,
+			uid,
+			opt_time,
+			type,
+			url,
+			date_int,
+			share_result,
+			come_from,
+			campaign,
+			module,
+			remark,
+			openid
+		) VALUES (
+			#{id},
+			#{uid},
+			#{optTime},
+			#{type},
+			#{url},
+			#{dateInt},
+			#{shareResult},
+			#{comeFrom},
+			#{campaign},
+			#{module},
+			#{remark},
+			#{openid}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE friend_share_log SET 	
+			uid = #{uid},
+			opt_time = #{optTime},
+			type = #{type},
+			url = #{url},
+			date_int = #{dateInt},
+			share_result = #{shareResult},
+			come_from = #{comeFrom},
+			campaign = #{campaign},
+			module = #{module},
+			remark = #{remark},
+			openid = #{openid}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM friend_share_log
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
