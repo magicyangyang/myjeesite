@@ -21,6 +21,7 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.huli.entity.FriendWechatLog;
 import com.thinkgem.jeesite.modules.huli.service.FriendWechatLogService;
+import com.thinkgem.jeesite.modules.huli.utils.JsonResponseUtil;
 
 /**
  * 用户信息管理Controller
@@ -49,16 +50,13 @@ public class FriendWechatLogController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = {"list", ""})
 	public String list(FriendWechatLog friendWechatLog, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<FriendWechatLog> page = friendWechatLogService.findPage(new Page<FriendWechatLog>(request, response), friendWechatLog); 
-		model.addAttribute("page", page);
-		return "modules/huli/friendWechatLogList";
+		return  JsonResponseUtil.ok( friendWechatLogService.findPage(new Page<FriendWechatLog>(request, response), friendWechatLog)); 
 	}
 
 	@ResponseBody
 	@RequestMapping(value = "form")
 	public String form(FriendWechatLog friendWechatLog, Model model) {
-		model.addAttribute("friendWechatLog", friendWechatLog);
-		return "modules/huli/friendWechatLogForm";
+		return  JsonResponseUtil.ok(friendWechatLog);
 	}
 	@ResponseBody
 	@RequestMapping(value = "save")
@@ -67,16 +65,9 @@ public class FriendWechatLogController extends BaseController {
 			return form(friendWechatLog, model);
 		}
 		friendWechatLogService.save(friendWechatLog);
-		addMessage(redirectAttributes, "保存用户信息保存成功成功");
-		return "redirect:"+Global.getAdminPath()+"/huli/friendWechatLog/?repage";
+		return JsonResponseUtil.ok("保存用户信息保存成功成功");
 	}
 	
-	@ResponseBody
-	@RequestMapping(value = "delete")
-	public String delete(FriendWechatLog friendWechatLog, RedirectAttributes redirectAttributes) {
-		friendWechatLogService.delete(friendWechatLog);
-		addMessage(redirectAttributes, "删除用户信息保存成功成功");
-		return "redirect:"+Global.getAdminPath()+"/huli/friendWechatLog/?repage";
-	}
+	 
 
 }

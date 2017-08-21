@@ -5,13 +5,14 @@ package com.thinkgem.jeesite.modules.huli.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
-import com.thinkgem.jeesite.modules.huli.entity.FriendInviter;
 import com.thinkgem.jeesite.modules.huli.dao.FriendInviterDao;
+import com.thinkgem.jeesite.modules.huli.entity.FriendInviter;
 
 /**
  * 发起人信息管理Service
@@ -22,6 +23,12 @@ import com.thinkgem.jeesite.modules.huli.dao.FriendInviterDao;
 @Transactional(readOnly = true)
 public class FriendInviterService extends CrudService<FriendInviterDao, FriendInviter> {
 
+	/**
+	 * 持久层对象
+	 */
+	@Autowired
+	protected FriendInviterDao dao;
+	
 	public FriendInviter get(String id) {
 		return super.get(id);
 	}
@@ -42,6 +49,10 @@ public class FriendInviterService extends CrudService<FriendInviterDao, FriendIn
 	@Transactional(readOnly = false)
 	public void delete(FriendInviter friendInviter) {
 		super.delete(friendInviter);
+	}
+
+	public FriendInviter getInfoByOpenid(String openid) {
+		return dao.getInfoByOpenid(openid);
 	}
 	
 }

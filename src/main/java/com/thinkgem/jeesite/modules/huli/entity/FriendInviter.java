@@ -6,8 +6,9 @@ package com.thinkgem.jeesite.modules.huli.entity;
 import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 
 /**
@@ -25,7 +26,9 @@ public class FriendInviter extends DataEntity<FriendInviter> {
 	private Integer score;		// 总得分
 	private String code;		// 兑换码
 	private String remark;		// 备注
+	@JSONField(format = "yyyy-MM-dd HH:mm:ss")
 	private Date createTime;		// 创建时间
+	@JSONField(format = "yyyy-MM-dd HH:mm:ss")
 	private Date updateTime;		// 更新时间
 	
 	public FriendInviter() {

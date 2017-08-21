@@ -5,6 +5,8 @@ package com.thinkgem.jeesite.modules.huli.entity;
 
 import org.hibernate.validator.constraints.Length;
 import java.util.Date;
+
+import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
@@ -24,7 +26,9 @@ public class FriendClickInfoLog extends DataEntity<FriendClickInfoLog> {
 	private String result;		// 操作结果
 	private String remark;		// 备注
 	private Integer campaign;		// 活动标识
+	@JSONField(format = "yyyy-MM-dd HH:mm:ss")
 	private Date createTime;		// 创建时间
+	@JSONField(format = "yyyy-MM-dd HH:mm:ss")
 	private Date updateTime;		// 更新时间
 	
 	public FriendClickInfoLog() {

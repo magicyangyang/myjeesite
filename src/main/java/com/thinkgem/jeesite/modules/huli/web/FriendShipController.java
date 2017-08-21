@@ -71,11 +71,6 @@ public class FriendShipController extends BaseController {
 		return JsonResponseUtil.ok("保存邀请关系成功");
 	}
 	
-	@RequestMapping(value = "delete")
-	@ResponseBody
-	public String delete(FriendShip friendShip, RedirectAttributes redirectAttributes) {
-		friendShipService.delete(friendShip);
-		return JsonResponseUtil.ok("删除邀请关系成功");
-	}
+	 
 
 }

@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.huli.dao;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.huli.entity.FriendClickInfoLog;
@@ -14,5 +16,7 @@ import com.thinkgem.jeesite.modules.huli.entity.FriendClickInfoLog;
  */
 @MyBatisDao
 public interface FriendClickInfoLogDao extends CrudDao<FriendClickInfoLog> {
+
+	FriendClickInfoLog getClickInfoByOpenidAndType(@Param("openid")String openid,@Param("type") int type);
 	
 }

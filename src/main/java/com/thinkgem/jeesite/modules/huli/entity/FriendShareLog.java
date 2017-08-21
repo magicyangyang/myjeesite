@@ -19,6 +19,7 @@ public class FriendShareLog extends DataEntity<FriendShareLog> {
 	
 	private static final long serialVersionUID = 1L;
 	private Long uid;		// 操作人
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date optTime;		// 操作时间
 	private Integer type;		// 操作类型
 	private String url;		// 操作页面url

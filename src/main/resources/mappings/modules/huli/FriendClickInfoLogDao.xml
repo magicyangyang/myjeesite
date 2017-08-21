@@ -135,4 +135,13 @@
 		WHERE id = #{id}
 	</update>
 	
+	<select id="getClickInfoByOpenidAndType" resultType="FriendClickInfoLog">
+		SELECT 
+			<include refid="friendClickInfoLogColumns"/>
+		FROM friend_click_info_log a
+		<include refid="friendClickInfoLogJoins"/>
+		WHERE a.openid =#{openid} and a.type=#{type} order by update_time desc limit 1
+	</select>
+	
+	
 </mapper>

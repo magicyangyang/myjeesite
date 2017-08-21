@@ -5,6 +5,8 @@ package com.thinkgem.jeesite.modules.huli.entity;
 
 import org.hibernate.validator.constraints.Length;
 import java.util.Date;
+
+import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.validation.constraints.NotNull;
 
@@ -23,7 +25,9 @@ public class FriendShip extends DataEntity<FriendShip> {
 	private String taskNickname;		// 被邀请人昵称
 	private String taskHeadimgurl;		// 被邀请人头像地址
 	private String remark;		// 备注
+	@JSONField(format = "yyyy-MM-dd HH:mm:ss")
 	private Date createTime;		// 创建时间
+	@JSONField(format = "yyyy-MM-dd HH:mm:ss")
 	private Date updateTime;		// 更新时间
 	
 	public FriendShip() {

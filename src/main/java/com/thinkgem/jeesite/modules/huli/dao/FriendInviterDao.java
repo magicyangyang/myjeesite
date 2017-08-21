@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.huli.dao;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.huli.entity.FriendInviter;
@@ -14,5 +16,7 @@ import com.thinkgem.jeesite.modules.huli.entity.FriendInviter;
  */
 @MyBatisDao
 public interface FriendInviterDao extends CrudDao<FriendInviter> {
+
+	FriendInviter getInfoByOpenid(@Param("openid")String openid);
 	
 }

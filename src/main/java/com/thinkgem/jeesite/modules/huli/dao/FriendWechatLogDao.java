@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.huli.dao;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.huli.entity.FriendWechatLog;
@@ -15,6 +17,6 @@ import com.thinkgem.jeesite.modules.huli.entity.FriendWechatLog;
 @MyBatisDao
 public interface FriendWechatLogDao extends CrudDao<FriendWechatLog> {
 
-	FriendWechatLog getByOpenid(String openid);
+	FriendWechatLog getByOpenid(@Param("openid")String openid);
 	
 }

@@ -32,7 +32,7 @@ import com.thinkgem.jeesite.modules.huli.utils.JsonResponseUtil;
  * @version 2017-08-20
  */
 @Controller
-@RequestMapping(value = "${adminPath}/huli/friendTask")
+@RequestMapping(value = "${adminPath}/huli/qa")
 public class FriendTaskController extends BaseController {
 
 	@Autowired
@@ -75,7 +75,7 @@ public class FriendTaskController extends BaseController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = {"list", ""})
+	@RequestMapping(value = {"list"})
 	public String list(FriendTask friendTask, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<FriendTask> page = friendTaskService.findPage(new Page<FriendTask>(request, response), friendTask); 
 		return JsonResponseUtil.ok(page);
@@ -95,7 +95,7 @@ public class FriendTaskController extends BaseController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "save")
+	@RequestMapping(value = "")
 	public String save(FriendTask friendTask, Integer question, Integer answer, Model model, RedirectAttributes redirectAttributes) {
 		// 1. 校验
 		if(StringUtils.isBlank(friendTask.getInviteOpenId())){

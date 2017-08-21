@@ -99,11 +99,5 @@ public class FriendClickInfoLogController extends BaseController {
 		return JsonResponseUtil.ok("保存日志保存成功成功");
 	}
 	
-	@RequestMapping(value = "delete")
-	@ResponseBody
-	public String delete(FriendClickInfoLog friendClickInfoLog, RedirectAttributes redirectAttributes) {
-		friendClickInfoLogService.delete(friendClickInfoLog);
-		return JsonResponseUtil.ok("删除日志保存成功成功");
-	}
-
+	 
 }

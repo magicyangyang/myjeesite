@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
@@ -28,11 +29,17 @@ import com.thinkgem.jeesite.modules.huli.utils.JsonResponseUtil;
  * @version 2017-08-20
  */
 @Controller
-@RequestMapping(value = "${adminPath}/huli/friendInviter")
+@RequestMapping(value = "${adminPath}/huli/code")
 public class FriendInviterController extends BaseController {
 
 	@Autowired
 	private FriendInviterService friendInviterService;
+	
+	@RequestMapping(value = "")
+	@ResponseBody
+	public String code(String openid, RedirectAttributes redirectAttributes) {
+		return JsonResponseUtil.ok(friendInviterService.getInfoByOpenid(openid));
+	}
 	
 	@ModelAttribute
 	public FriendInviter get(@RequestParam(required=false) String id) {
@@ -46,33 +53,29 @@ public class FriendInviterController extends BaseController {
 		return entity;
 	}
 	
-	@RequestMapping(value = {"list", ""})
+	@RequestMapping(value = {"list"})
+	@ResponseBody
 	public String list(FriendInviter friendInviter, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<FriendInviter> page = friendInviterService.findPage(new Page<FriendInviter>(request, response), friendInviter); 
 		return  JsonResponseUtil.ok(page);
 	}
 
 	@RequestMapping(value = "form")
+	@ResponseBody
 	public String form(FriendInviter friendInviter, Model model) {
-		model.addAttribute("friendInviter", friendInviter);
-		return "modules/huli/friendInviterForm";
+		return JsonResponseUtil.ok(friendInviter);
 	}
 
 	@RequestMapping(value = "save")
+	@ResponseBody
 	public String save(FriendInviter friendInviter, Model model, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, friendInviter)){
 			return form(friendInviter, model);
 		}
 		friendInviterService.save(friendInviter);
-		addMessage(redirectAttributes, "保存发起人信息保存成功成功");
-		return "redirect:"+Global.getAdminPath()+"/huli/friendInviter/?repage";
+		return JsonResponseUtil.ok("保存发起人信息保存成功成功");
 	}
 	
-	@RequestMapping(value = "delete")
-	public String delete(FriendInviter friendInviter, RedirectAttributes redirectAttributes) {
-		friendInviterService.delete(friendInviter);
-		addMessage(redirectAttributes, "删除发起人信息保存成功成功");
-		return "redirect:"+Global.getAdminPath()+"/huli/friendInviter/?repage";
-	}
+	 
 
 }

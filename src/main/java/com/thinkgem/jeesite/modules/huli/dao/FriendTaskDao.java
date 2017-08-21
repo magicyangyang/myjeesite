@@ -21,7 +21,7 @@ public interface FriendTaskDao extends CrudDao<FriendTask> {
 	
 	List<FriendTask> getTasksByOpenids(@Param("inviteOpenid") String inviteOpenid, @Param("taskOpenId") String taskOpenId);
 
-	List<FriendTask> getTasksByInviteOpenid(String inviteOpenid);
+	List<FriendTask> getTasksByInviteOpenid(@Param("inviteOpenid") String inviteOpenid);
 
 	
 }

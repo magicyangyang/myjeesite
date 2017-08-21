@@ -100,11 +100,5 @@ public class FriendShareLogController extends BaseController {
 		return JsonResponseUtil.ok("保存日志保存成功");
 	}
 
-	@ResponseBody
-	@RequestMapping(value = "delete")
-	public String delete(FriendShareLog friendShareLog, RedirectAttributes redirectAttributes) {
-		friendShareLogService.delete(friendShareLog);
-		return JsonResponseUtil.ok("删除日志保存成功成功");
-	}
-
+ 
 }

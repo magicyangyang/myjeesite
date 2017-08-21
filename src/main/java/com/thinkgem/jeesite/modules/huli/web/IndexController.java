@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,10 +22,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.huli.entity.FriendClickInfoLog;
 import com.thinkgem.jeesite.modules.huli.entity.FriendShip;
 import com.thinkgem.jeesite.modules.huli.entity.FriendTask;
 import com.thinkgem.jeesite.modules.huli.entity.FriendWechatLog;
 import com.thinkgem.jeesite.modules.huli.entity.User;
+import com.thinkgem.jeesite.modules.huli.service.FriendClickInfoLogService;
 import com.thinkgem.jeesite.modules.huli.service.FriendShipService;
 import com.thinkgem.jeesite.modules.huli.service.FriendTaskService;
 import com.thinkgem.jeesite.modules.huli.service.FriendWechatLogService;
@@ -49,6 +52,9 @@ public class IndexController extends BaseController {
 
 	@Autowired
 	private FriendTaskService friendTaskService;
+	
+	@Autowired
+	private FriendClickInfoLogService friendClickInfoLogService;
 
 	/**
 	 * 存储用户的微信账号信息数据
@@ -179,7 +185,7 @@ public class IndexController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("task_info")
-	public @ResponseBody String task_info(String inviteOpenId,String taskOpenId, RedirectAttributes redirectAttributes) {
+	public @ResponseBody String task_info(String inviteOpenId, String taskOpenId, RedirectAttributes redirectAttributes) {
 		logger.info("[task_info] inviteOpenId={}|taskOpenId={}", inviteOpenId,taskOpenId);
 		if (StringUtils.isBlank(inviteOpenId)&&StringUtils.isBlank(taskOpenId)) {
 			return JsonResponseUtil.badResult("参数不能为空");
@@ -265,7 +271,13 @@ public class IndexController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("iscome")
-	public @ResponseBody String iscome(String openid) {
+	public @ResponseBody String iscome(String openid,int type) {
+		if(StringUtils.isBlank(openid)||type<=0){
+			  JSONObject result = new JSONObject();
+		      result.put("success", false);
+		      result.put("data","参数不正确");
+		      return  result.toJSONString();
+		}
 		FriendWechatLog res = friendWechatLogService.getByOpenid(openid);
 		if(null==res){
 			  JSONObject result = new JSONObject();
@@ -276,6 +288,12 @@ public class IndexController extends BaseController {
 		  JSONObject result = new JSONObject();
 	      result.put("success", true);
 	      result.put("data",res);
+	      FriendClickInfoLog clickInfo = friendClickInfoLogService.getClickInfoByOpenidAndType(openid,type);
+	      if(null==clickInfo){
+	    	  result.put("type",true);
+	      }else{
+	    	  result.put("type",false);
+	      }
 		return result.toJSONString();
 	}
 }

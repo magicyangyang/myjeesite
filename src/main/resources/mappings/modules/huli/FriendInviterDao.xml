@@ -105,4 +105,13 @@
 		WHERE id = #{id}
 	</update>
 	
+	<select id="getInfoByOpenid" resultType="FriendInviter">
+		SELECT 
+			<include refid="friendInviterColumns"/>
+		FROM friend_inviter a
+		<include refid="friendInviterJoins"/>
+		WHERE a.openid = #{openid} order by update_time desc limit 1
+	</select>
+	
+	
 </mapper>

@@ -5,6 +5,7 @@ package com.thinkgem.jeesite.modules.huli.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +13,7 @@ import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.modules.huli.entity.FriendClickInfoLog;
 import com.thinkgem.jeesite.modules.huli.dao.FriendClickInfoLogDao;
+import com.thinkgem.jeesite.modules.huli.dao.FriendShipDao;
 
 /**
  * 狐狸日志管理Service
@@ -22,6 +24,12 @@ import com.thinkgem.jeesite.modules.huli.dao.FriendClickInfoLogDao;
 @Transactional(readOnly = true)
 public class FriendClickInfoLogService extends CrudService<FriendClickInfoLogDao, FriendClickInfoLog> {
 
+	/**
+	 * 持久层对象
+	 */
+	@Autowired
+	protected FriendClickInfoLogDao dao;
+	
 	public FriendClickInfoLog get(String id) {
 		return super.get(id);
 	}
@@ -42,6 +50,10 @@ public class FriendClickInfoLogService extends CrudService<FriendClickInfoLogDao
 	@Transactional(readOnly = false)
 	public void delete(FriendClickInfoLog friendClickInfoLog) {
 		super.delete(friendClickInfoLog);
+	}
+
+	public FriendClickInfoLog getClickInfoByOpenidAndType(String openid, int type) {
+		return dao.getClickInfoByOpenidAndType(openid,type);
 	}
 	
 }
