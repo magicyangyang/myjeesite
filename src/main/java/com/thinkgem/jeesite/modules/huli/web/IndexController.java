@@ -179,24 +179,49 @@ public class IndexController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("task_info")
-	public @ResponseBody String task_info(String openid, RedirectAttributes redirectAttributes) {
-		logger.info("[task_info] openid={}", openid);
-		if (StringUtils.isBlank(openid)) {
+	public @ResponseBody String task_info(String inviteOpenId,String taskOpenId, RedirectAttributes redirectAttributes) {
+		logger.info("[task_info] inviteOpenId={}|taskOpenId={}", inviteOpenId,taskOpenId);
+		if (StringUtils.isBlank(inviteOpenId)&&StringUtils.isBlank(taskOpenId)) {
 			return JsonResponseUtil.badResult("参数不能为空");
 		}
-		FriendWechatLog taskUser = friendWechatLogService.getByOpenid(openid);
-		if (null == taskUser) {
-			return JsonResponseUtil.badResult("你好,请先关注狐狸慧赚公众号");
-		}
-		try {
-			List<FriendTask> tasklist = friendTaskService.getTasksByInviteOpenid(openid);
-			if (null != tasklist) {
-				return JsonResponseUtil.ok(tasklist);
-			} else {
-				return JsonResponseUtil.badResult(2, "太没面子了，还没有人帮你赚钱");
+		if(StringUtils.isNotBlank(inviteOpenId)&&StringUtils.isBlank(taskOpenId)){
+			FriendWechatLog taskUser = friendWechatLogService.getByOpenid(inviteOpenId);
+			if (null == taskUser) {
+				return JsonResponseUtil.badResult("你好,请先关注狐狸慧赚公众号");
 			}
-		} catch (Exception e) {
-			logger.info("[binderror] inviteOpenid={}|e={}", openid, e.getMessage(), e);
+			try {
+				List<FriendTask> tasklist = friendTaskService.getTasksByInviteOpenid(inviteOpenId);
+				if (null != tasklist) {
+					return JsonResponseUtil.ok(tasklist);
+				} else {
+					return JsonResponseUtil.badResult(3, "太没面子了，还没有人帮你赚钱");
+				}
+			} catch (Exception e) {
+				logger.info("[binderror] inviteOpenid={}|e={}", inviteOpenId, e.getMessage(), e);
+			}
+		}
+		if(StringUtils.isNotBlank(taskOpenId)){
+			FriendWechatLog taskUser = friendWechatLogService.getByOpenid(taskOpenId);
+			if (null == taskUser) {
+				return JsonResponseUtil.badResult("你好,请先关注狐狸慧赚公众号");
+			}
+			if(StringUtils.isBlank(inviteOpenId)){
+				List<FriendShip> shipList = friendShipService.getShipByTaskOpenid(taskOpenId);
+				if(null==shipList||shipList.isEmpty()){
+					return JsonResponseUtil.badResult(2, "暂无邀请人邀请你做任务");
+				}
+				 inviteOpenId = shipList.get(0).getInviteOpenId();
+			}
+			try {
+				List<FriendTask> tasklist = friendTaskService.getTasksByFriendShip(inviteOpenId,taskOpenId);
+				if (null != tasklist) {
+					return JsonResponseUtil.ok(tasklist);
+				} else {
+					return JsonResponseUtil.badResult(2, "暂无邀请人邀请你做任务");
+				}
+			} catch (Exception e) {
+				logger.info("[task_infoerror] inviteOpenid={}|e={}", inviteOpenId, e.getMessage(), e);
+			}
 		}
 		return JsonResponseUtil.badResult("系统繁忙,请稍候再试");
 	}

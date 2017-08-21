@@ -67,6 +67,10 @@ public class FriendTaskService extends CrudService<FriendTaskDao, FriendTask> {
 		return dao.getTasksByInviteOpenid(inviteOpenid);
 	}
 	
+	public List<FriendTask> getTasksByFriendShip(String inviteOpenid,String taskOpenid) {
+		return dao.getTasksByOpenids(inviteOpenid,taskOpenid);
+	}
+	
 	public FriendTask getByOpenids(String inviteOpenid, String taskOpenId) {
 		FriendTask  task =  null;
 		List<FriendTask> taskList = dao.getTasksByOpenids(inviteOpenid, taskOpenId);
