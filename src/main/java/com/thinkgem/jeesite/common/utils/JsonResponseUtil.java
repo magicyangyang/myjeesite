@@ -9,9 +9,9 @@ import java.util.Map.Entry;
 
 public final class JsonResponseUtil {
 
-    private static final String JSON_ERRORCODE_NAME = "code";
+    private static final String JSON_ERRORCODE_NAME = "errorCode";
 
-    private static final String JSON_ERRORMSG_NAME = "message";
+    private static final String JSON_ERRORMSG_NAME = "errorMessage";
 
     private static final String JSON_DATA_NAME = "data";
 
