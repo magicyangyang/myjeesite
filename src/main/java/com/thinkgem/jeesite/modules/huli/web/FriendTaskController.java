@@ -3,7 +3,9 @@
  */
 package com.thinkgem.jeesite.modules.huli.web;
 
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,8 +22,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.huli.entity.FriendInviter;
 import com.thinkgem.jeesite.modules.huli.entity.FriendTask;
 import com.thinkgem.jeesite.modules.huli.entity.FriendWechatLog;
+import com.thinkgem.jeesite.modules.huli.service.FriendInviterService;
+import com.thinkgem.jeesite.modules.huli.service.FriendSourceCodeService;
 import com.thinkgem.jeesite.modules.huli.service.FriendTaskService;
 import com.thinkgem.jeesite.modules.huli.service.FriendWechatLogService;
 import com.thinkgem.jeesite.modules.huli.utils.JsonResponseUtil;
@@ -40,6 +45,12 @@ public class FriendTaskController extends BaseController {
 	
 	@Autowired
 	private FriendWechatLogService friendWechatLogService;
+	
+	@Autowired
+	private FriendInviterService friendInviterService;
+	
+	@Autowired
+	private  FriendSourceCodeService friendSourceCodeService;
 	
 	/*@ModelAttribute
 	public FriendTask get(@RequestParam(required=false) String id) {
@@ -170,6 +181,9 @@ public class FriendTaskController extends BaseController {
 		// 3. 保存
 		try {
 			friendTaskService.save(friendTask);
+			if(friendTask.getStatus()==1){
+				updateInviteStatus(friendTask);
+			}
 		} catch (Exception e) {
 			logger.error("保存答题结果失败！", e);
 			return JsonResponseUtil.badResult("保存答题结果失败！");
@@ -181,12 +195,42 @@ public class FriendTaskController extends BaseController {
 		result.put("status", friendTask.getStatus());
 		return JsonResponseUtil.ok(result);
 	}
-	
-	@ResponseBody
-	@RequestMapping(value = "delete")
-	public String delete(FriendTask friendTask, RedirectAttributes redirectAttributes) {
-		friendTaskService.delete(friendTask);
-		return JsonResponseUtil.ok("删除任务保存成功成功");
+
+	private void updateInviteStatus(FriendTask friendTask) {
+		List<FriendTask> tasks = friendTaskService.getTasksByInviteOpenid(friendTask.getInviteOpenId());
+		if(null==tasks||tasks.isEmpty()){
+			
+		}
+		if(tasks.size()==1){
+			FriendInviter friendInviter = new FriendInviter();
+			friendInviter.setIsNewRecord(true);
+			friendInviter.setCode("");
+			friendInviter.setCreateTime(new Date());
+			friendInviter.setUpdateTime(new Date());
+			friendInviter.setOpenid(friendTask.getInviteOpenId());
+			friendInviter.setStatus(0);
+			friendInviter.setIsSendmoney(0);
+			friendInviter.setInviteNum(1);
+			friendInviter.setScore(friendTask.getScore());
+			friendInviterService.save(friendInviter);
+		}else{
+			FriendInviter friendInviter = friendInviterService.getInfoByOpenid(friendTask.getInviteOpenId());
+			friendInviter.setIsNewRecord(false);
+			int score = friendInviter.getScore();
+			if(tasks.size()<=3){
+				score =friendTask.getScore()+friendInviter.getScore();
+			}
+			friendInviter.setCode(tasks.size()==3?getCodeByScore(friendTask.getInviteOpenId(),score):friendInviter.getCode());
+			friendInviter.setUpdateTime(new Date());
+			friendInviter.setStatus(tasks.size()>=3?1:0);
+			friendInviter.setInviteNum(tasks.size());
+			friendInviter.setScore(score);
+			friendInviterService.save(friendInviter);
+		}
+	}
+
+	private String getCodeByScore(String openid, int score) {
+		return friendSourceCodeService.getCodeByScore(openid,score);
 	}
 
 }

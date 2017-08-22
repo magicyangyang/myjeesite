@@ -191,13 +191,17 @@ public class IndexController extends BaseController {
 			return JsonResponseUtil.badResult("参数不能为空");
 		}
 		if(StringUtils.isNotBlank(inviteOpenId)&&StringUtils.isBlank(taskOpenId)){
-			FriendWechatLog taskUser = friendWechatLogService.getByOpenid(inviteOpenId);
-			if (null == taskUser) {
+			FriendWechatLog inviteUser = friendWechatLogService.getByOpenid(inviteOpenId);
+			if (null == inviteUser) {
 				return JsonResponseUtil.badResult("你好,请先关注狐狸慧赚公众号");
 			}
 			try {
 				List<FriendTask> tasklist = friendTaskService.getTasksByInviteOpenid(inviteOpenId);
-				if (null != tasklist) {
+				if (null != tasklist&& !tasklist.isEmpty()) {
+					for (FriendTask friendTask : tasklist) {
+						friendTask.setInviteHeadimgurl(inviteUser.getHeadimgurl());
+						friendTask.setInviteNickname(inviteUser.getNickName());
+					}
 					return JsonResponseUtil.ok(tasklist);
 				} else {
 					return JsonResponseUtil.badResult(3, "太没面子了，还没有人帮你赚钱");
@@ -220,7 +224,12 @@ public class IndexController extends BaseController {
 			}
 			try {
 				List<FriendTask> tasklist = friendTaskService.getTasksByFriendShip(inviteOpenId,taskOpenId);
-				if (null != tasklist) {
+				if (null != tasklist&& !tasklist.isEmpty()) {
+					FriendWechatLog inviteUser = friendWechatLogService.getByOpenid(inviteOpenId);
+					for (FriendTask friendTask : tasklist) {
+						friendTask.setInviteHeadimgurl(inviteUser.getHeadimgurl());
+						friendTask.setInviteNickname(inviteUser.getNickName());
+					}
 					return JsonResponseUtil.ok(tasklist);
 				} else {
 					return JsonResponseUtil.badResult(2, "暂无邀请人邀请你做任务");

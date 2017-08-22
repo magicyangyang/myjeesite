@@ -32,6 +32,8 @@ public class FriendTaskService extends CrudService<FriendTaskDao, FriendTask> {
 	@Autowired
 	protected FriendTaskDao dao;
 	
+
+	
 	public FriendTask get(String id) {
 		return super.get(id);
 	}
@@ -79,5 +81,6 @@ public class FriendTaskService extends CrudService<FriendTaskDao, FriendTask> {
 		}
 		return task;
 	}
+
 	
 }

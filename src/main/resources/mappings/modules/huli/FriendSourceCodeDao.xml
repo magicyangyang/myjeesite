@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.huli.dao.FriendSourceCodeDao">
+    
+	<sql id="friendSourceCodeColumns">
+		a.id AS "id",
+		a.act_id AS "actId",
+		a.openid AS "openid",
+		a.channel_name AS "channelName",
+		a.code AS "code",
+		a.score AS "score",
+		a.status AS "status",
+		a.type AS "type",
+		a.amount AS "amount",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime"
+	</sql>
+	
+	<sql id="friendSourceCodeJoins">
+	</sql>
+    
+	<select id="get" resultType="FriendSourceCode">
+		SELECT 
+			<include refid="friendSourceCodeColumns"/>
+		FROM friend_source_code a
+		<include refid="friendSourceCodeJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="FriendSourceCode">
+		SELECT 
+			<include refid="friendSourceCodeColumns"/>
+		FROM friend_source_code a
+		<include refid="friendSourceCodeJoins"/>
+		<where>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="FriendSourceCode">
+		SELECT 
+			<include refid="friendSourceCodeColumns"/>
+		FROM friend_source_code a
+		<include refid="friendSourceCodeJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO friend_source_code(
+			id,
+			act_id,
+			openid,
+			channel_name,
+			code,
+			score,
+			status,
+			type,
+			amount,
+			create_time,
+			update_time
+		) VALUES (
+			#{id},
+			#{actId},
+			#{openid},
+			#{channelName},
+			#{code},
+			#{score},
+			#{status},
+			#{type},
+			#{amount},
+			#{createTime},
+			#{updateTime}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE friend_source_code SET 	
+			act_id = #{actId},
+			openid = #{openid},
+			channel_name = #{channelName},
+			code = #{code},
+			score = #{score},
+			status = #{status},
+			type = #{type},
+			amount = #{amount},
+			create_time = #{createTime},
+			update_time = #{updateTime}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM friend_source_code
+		WHERE id = #{id}
+	</update>
+	
+	<select id="getInfobyOpenid" resultType="FriendSourceCode">
+		SELECT 
+			<include refid="friendSourceCodeColumns"/>
+		FROM friend_source_code a
+		<include refid="friendSourceCodeJoins"/>
+		WHERE a.openid = #{openid} and status=1 order by update_time limit 1
+	</select>
+		<select id="getCodeInfoByUnUsedScore" resultType="FriendSourceCode">
+		SELECT 
+			<include refid="friendSourceCodeColumns"/>
+		FROM friend_source_code a
+		<include refid="friendSourceCodeJoins"/>
+		WHERE a.score = #{score} and status=0 and openid is not null order by create_time limit 1;
+	</select>
+	
+</mapper>

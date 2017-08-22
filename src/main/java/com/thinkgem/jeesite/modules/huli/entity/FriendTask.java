@@ -21,6 +21,8 @@ public class FriendTask extends DataEntity<FriendTask> {
 	
 	private static final long serialVersionUID = 1L;
 	private String inviteOpenId;		// invite_open_id
+	private String inviteHeadimgurl;//邀请人微信头像
+	private String inviteNickname;//邀请人微信昵称
 	private String taskOpenId;		// 邀请人微信id
 	private String taskNickname;		// task_nickname
 	private String taskHeadimgurl;		// 被邀请人微信id
@@ -47,6 +49,14 @@ public class FriendTask extends DataEntity<FriendTask> {
 
 	public String getInviteOpenId() {
 		return inviteOpenId;
+	}
+
+	public String getInviteHeadimgurl() {
+		return inviteHeadimgurl;
+	}
+
+	public void setInviteHeadimgurl(String inviteHeadimgurl) {
+		this.inviteHeadimgurl = inviteHeadimgurl;
 	}
 
 	public void setInviteOpenId(String inviteOpenId) {
@@ -171,5 +181,15 @@ public class FriendTask extends DataEntity<FriendTask> {
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
+
+	public String getInviteNickname() {
+		return inviteNickname;
+	}
+
+	public void setInviteNickname(String inviteNickname) {
+		this.inviteNickname = inviteNickname;
+	}
+	
+	
 	
 }
