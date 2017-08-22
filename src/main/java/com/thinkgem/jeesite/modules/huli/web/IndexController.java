@@ -273,27 +273,21 @@ public class IndexController extends BaseController {
 	@RequestMapping("iscome")
 	public @ResponseBody String iscome(String openid,int type) {
 		if(StringUtils.isBlank(openid)||type<=0){
-			  JSONObject result = new JSONObject();
-		      result.put("success", false);
-		      result.put("data","参数不正确");
-		      return  result.toJSONString();
+		      return JsonResponseUtil.badResult("参数不正确");
 		}
 		FriendWechatLog res = friendWechatLogService.getByOpenid(openid);
 		if(null==res){
-			  JSONObject result = new JSONObject();
-		      result.put("success", false);
-		      result.put("data","请先关注狐狸慧赚公众号");
-		      return  result.toJSONString();
+			  return JsonResponseUtil.badResult("你好,请先关注狐狸慧赚公众号");
 		}
 		  JSONObject result = new JSONObject();
-	      result.put("success", true);
 	      result.put("data",res);
 	      FriendClickInfoLog clickInfo = friendClickInfoLogService.getClickInfoByOpenidAndType(openid,type);
 	      if(null==clickInfo){
-	    	  result.put("type",true);
+	    	  result.put("success",true);
 	      }else{
-	    	  result.put("type",false);
+	    	  result.put("success",false);
 	      }
+	      result.put("code",0);
 		return result.toJSONString();
 	}
 }
