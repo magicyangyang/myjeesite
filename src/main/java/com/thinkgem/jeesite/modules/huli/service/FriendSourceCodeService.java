@@ -67,5 +67,9 @@ public class FriendSourceCodeService extends CrudService<FriendSourceCodeDao, Fr
 		}
 		return code.getCode();
 	}
+
+	public FriendSourceCode getInfobyOpenid(String openid) {
+		return  dao.getInfobyOpenid(openid);
+	}
 	
 }

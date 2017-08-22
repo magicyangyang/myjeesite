@@ -296,7 +296,7 @@ public class IndexController extends BaseController {
 	      }else{
 	    	  result.put("success",false);
 	      }
-	      result.put("code",0);
+	      result.put("errorCode",0);
 		return result.toJSONString();
 	}
 }

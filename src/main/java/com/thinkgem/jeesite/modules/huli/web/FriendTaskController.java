@@ -223,6 +223,7 @@ public class FriendTaskController extends BaseController {
 			friendInviter.setCode(tasks.size()==3?getCodeByScore(friendTask.getInviteOpenId(),score):friendInviter.getCode());
 			friendInviter.setUpdateTime(new Date());
 			friendInviter.setStatus(tasks.size()>=3?1:0);
+			friendInviter.setIsSendmoney(tasks.size()>=3?1:0);
 			friendInviter.setInviteNum(tasks.size());
 			friendInviter.setScore(score);
 			friendInviterService.save(friendInviter);
