@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<groupId>com.thinkgem.jeesite</groupId>
-	<artifactId>jeesite</artifactId>
+	<artifactId>web</artifactId>
 	<version>1.2.6</version>
 	<packaging>war</packaging>
 	
@@ -1038,9 +1038,9 @@
 	<!-- 开发者信息 -->
 	<developers>  
 		<developer>
-			<id>thinkgem</id>
-			<name>WangZhen</name>
-			<email>thinkgem at 163.com</email>
+			<id>shuai</id>
+			<name>shuai</name>
+			<email>shuailiu@126.com</email>
 			<roles><role>Project lead</role></roles>
 			<timezone>+8</timezone>
 		</developer>
