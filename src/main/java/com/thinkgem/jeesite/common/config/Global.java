@@ -87,6 +87,13 @@ public class Global {
 	}
 	
 	/**
+	 * 获取管理端根路径
+	 */
+	public static String getHuliPath() {
+		return getConfig("huliPath");
+	}
+	
+	/**
 	 * 获取前端根路径
 	 */
 	public static String getFrontPath() {

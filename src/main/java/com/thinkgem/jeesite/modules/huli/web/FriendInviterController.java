@@ -29,7 +29,7 @@ import com.thinkgem.jeesite.modules.huli.utils.JsonResponseUtil;
  * @version 2017-08-20
  */
 @Controller
-@RequestMapping(value = "${adminPath}/huli/code")
+@RequestMapping(value = "${huliPath}/code")
 public class FriendInviterController extends BaseController {
 
 	@Autowired

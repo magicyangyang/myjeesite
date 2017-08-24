@@ -30,7 +30,7 @@ import com.thinkgem.jeesite.modules.huli.utils.JsonResponseUtil;
  * @version 2017-08-20
  */
 @Controller
-@RequestMapping(value = "${adminPath}/huli/clickinfo")
+@RequestMapping(value = "${huliPath}/clickinfo")
 public class FriendClickInfoLogController extends BaseController {
 
 	@Autowired

@@ -29,7 +29,7 @@ import com.thinkgem.jeesite.modules.huli.utils.JsonResponseUtil;
  * @version 2017-08-20
  */
 @Controller
-@RequestMapping(value = "${adminPath}/huli/friendWechatLog")
+@RequestMapping(value = "${huliPath}/friendWechatLog")
 public class FriendWechatLogController extends BaseController {
 
 	@Autowired

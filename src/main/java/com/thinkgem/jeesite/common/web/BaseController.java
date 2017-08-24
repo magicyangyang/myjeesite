@@ -49,6 +49,12 @@ public abstract class BaseController {
 	protected String adminPath;
 	
 	/**
+	 * 管理基础路径
+	 */
+	@Value("${huliPath}")
+	protected String huliPath;
+	
+	/**
 	 * 前端基础路径
 	 */
 	@Value("${frontPath}")

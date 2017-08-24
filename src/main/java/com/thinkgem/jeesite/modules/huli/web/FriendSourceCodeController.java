@@ -28,7 +28,7 @@ import com.thinkgem.jeesite.modules.huli.utils.JsonResponseUtil;
  * @version 2017-08-22
  */
 @Controller
-@RequestMapping(value = "${adminPath}/huli/scode")
+@RequestMapping(value = "${huliPath}/scode")
 public class FriendSourceCodeController extends BaseController {
 
 	@Autowired

@@ -29,7 +29,7 @@ import com.thinkgem.jeesite.modules.huli.service.WechatLogService;
  * @version 2017-08-20
  */
 @Controller
-@RequestMapping(value = "${adminPath}/huli/wechatLog")
+@RequestMapping(value = "${huliPath}/wechatLog")
 public class WechatLogController extends BaseController {
 
 	@Autowired
