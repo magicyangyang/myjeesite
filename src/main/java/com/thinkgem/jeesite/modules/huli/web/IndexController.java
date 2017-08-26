@@ -10,11 +10,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -61,9 +63,8 @@ public class IndexController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("wechatuser")
+	@RequestMapping(value ="wechatuser")
 	public @ResponseBody String wechatuser(String userjson, RedirectAttributes redirectAttributes) {
-		logger.info("[wechatuser] userjson={}", userjson);
 		if (StringUtils.isBlank(userjson)) {
 			return JsonResponseUtil.badResult("参数不能为空");
 		}
@@ -76,9 +77,11 @@ public class IndexController extends BaseController {
 		if (StringUtils.isBlank(jsStr)) {
 			return JsonResponseUtil.badResult("参数decode失败");
 		}
+		jsStr=StringEscapeUtils.unescapeHtml4(jsStr);
+		logger.info("[wechatuser] userjson={}", jsStr);
 		User user = null;
-		if (StringUtils.isNotBlank(userjson)) {
-			user = JSONObject.parseObject(userjson, User.class);
+		if (StringUtils.isNotBlank(jsStr)) {
+			user = JSONObject.parseObject(jsStr, User.class);
 		}
 		if (null == user) {
 			return JsonResponseUtil.badResult("数据不正确,不能解析出对应的user信息");
@@ -87,7 +90,7 @@ public class IndexController extends BaseController {
 			return JsonResponseUtil.badResult("数据不正确,user信息中的openid不能为空");
 		}
 		try {
-			FriendWechatLog res = friendWechatLogService.saveUser(jsStr);
+			FriendWechatLog res = friendWechatLogService.saveUser(user);
 			if (null != res) {
 				return JsonResponseUtil.ok(res);
 			} else {

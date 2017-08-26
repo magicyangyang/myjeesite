@@ -54,35 +54,30 @@ public class FriendWechatLogService extends CrudService<FriendWechatLogDao, Frie
 	public void delete(FriendWechatLog friendWechatLog) {
 		super.delete(friendWechatLog);
 	}
-
-	public FriendWechatLog saveUser(String userjson) {
-		User user = null;
-		if(StringUtils.isNotBlank(userjson)){
-			user = JSONObject.parseObject(userjson,User.class);
-		}
+	@Transactional(readOnly = false)
+	public FriendWechatLog saveUser(User user) {
 		FriendWechatLog wechatlog = new FriendWechatLog(user);
-		FriendWechatLog res = get(wechatlog.getOpenid());
+		FriendWechatLog res = getByOpenid(wechatlog.getOpenid());
 		if(null!=res){
-			 return res;
+			wechatlog.setId(res.getId());
 		}else{
-			super.save(wechatlog);
+			wechatlog.setId(null);
 		}
-		res=get(wechatlog.getOpenid());
-		return res;
+		super.save(wechatlog);
+		return getByOpenid(wechatlog.getOpenid());
 	}
-	
+	@Transactional(readOnly = false)
 	public FriendWechatLog saveFriendWechatLog(FriendWechatLog wechatlog) {
-		FriendWechatLog res = get(wechatlog.getOpenid());
+		FriendWechatLog res = getByOpenid(wechatlog.getOpenid());
 		if(null!=res){
 			 return res;
 		}else{
 			super.save(wechatlog);
 		}
-		res=get(wechatlog.getOpenid());
+		res=getByOpenid(wechatlog.getOpenid());
 		return res;
 	}
 	
-
 	public FriendWechatLog getByOpenid(String openid) {
 		return dao.getByOpenid(openid);
 	}
