@@ -11,9 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
+import com.thinkgem.jeesite.modules.huli.dao.FriendShipDao;
 import com.thinkgem.jeesite.modules.huli.entity.FriendShip;
 import com.thinkgem.jeesite.modules.huli.entity.FriendWechatLog;
-import com.thinkgem.jeesite.modules.huli.dao.FriendShipDao;
 
 /**
  * 邀请关系Service
@@ -52,7 +52,8 @@ public class FriendShipService extends CrudService<FriendShipDao, FriendShip> {
 	public void delete(FriendShip friendShip) {
 		super.delete(friendShip);
 	}
-
+	
+	@Transactional(readOnly = false)
 	public String saveShip(FriendWechatLog taskUser, FriendWechatLog inviteUser) {
 		 FriendShip relationShip = dao.getShipByOpenid(taskUser.getOpenid(),inviteUser.getOpenid());
 		 if(null==relationShip){

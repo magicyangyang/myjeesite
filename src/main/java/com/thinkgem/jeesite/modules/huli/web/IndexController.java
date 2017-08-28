@@ -11,12 +11,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.time.DateUtils;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -161,6 +158,9 @@ public class IndexController extends BaseController {
 		if (StringUtils.isBlank(taskOpenid) || StringUtils.isBlank(inviteOpenid)) {
 			return JsonResponseUtil.badResult("参数不能为空");
 		}
+		if (taskOpenid.equals(inviteOpenid)) {
+			return JsonResponseUtil.badResult("邀请人不能邀请自己");
+		}
 		FriendWechatLog taskUser = friendWechatLogService.getByOpenid(taskOpenid);
 		if (null == taskUser) {
 			return JsonResponseUtil.badResult("被邀请人,请先关注狐狸慧赚公众号");
@@ -171,7 +171,7 @@ public class IndexController extends BaseController {
 		}
 		try {
 			String res = friendShipService.saveShip(taskUser, inviteUser);
-			if (null != res) {
+			if (null == res) {
 				return JsonResponseUtil.ok("保存成功");
 			} else {
 				return JsonResponseUtil.badResult(res);
@@ -205,7 +205,7 @@ public class IndexController extends BaseController {
 						friendTask.setInviteHeadimgurl(inviteUser.getHeadimgurl());
 						friendTask.setInviteNickname(inviteUser.getNickName());
 					}
-					return JsonResponseUtil.ok(tasklist);
+					return  task_ok(tasklist,inviteUser);
 				} else {
 					return JsonResponseUtil.badResult(3, "太没面子了，还没有人帮你赚钱");
 				}
@@ -233,7 +233,7 @@ public class IndexController extends BaseController {
 						friendTask.setInviteHeadimgurl(inviteUser.getHeadimgurl());
 						friendTask.setInviteNickname(inviteUser.getNickName());
 					}
-					return JsonResponseUtil.ok(tasklist);
+					return task_ok(tasklist,inviteUser);
 				} else {
 					return JsonResponseUtil.badResult(2, "暂无邀请人邀请你做任务");
 				}
@@ -243,6 +243,18 @@ public class IndexController extends BaseController {
 		}
 		return JsonResponseUtil.badResult("系统繁忙,请稍候再试");
 	}
+	
+    private static String task_ok(List<FriendTask> list,FriendWechatLog invite) {
+        JSONObject result = new JSONObject();
+        Map<String,String> inviteInfo = new HashMap<String,String>();
+        inviteInfo.put("inviteHeadimgurl", invite.getHeadimgurl());
+        inviteInfo.put("inviteNickname", invite.getNickName());
+        inviteInfo.put("inviteOpenId", invite.getOpenid());
+        result.put("data", list);
+        result.put("errorCode", 0);
+        result.put("inviteInfo", inviteInfo);
+        return  result.toJSONString();
+    }
 
 	/**
 	 * 存储用户的微信账号信息数据
@@ -294,7 +306,7 @@ public class IndexController extends BaseController {
 		  JSONObject result = new JSONObject();
 	      result.put("data",res);
 	      FriendClickInfoLog clickInfo = friendClickInfoLogService.getClickInfoByOpenidAndType(openid,type);
-	      if(null==clickInfo){
+	      if(null!=clickInfo){
 	    	  result.put("success",true);
 	      }else{
 	    	  result.put("success",false);
