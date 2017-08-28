@@ -160,7 +160,6 @@ public class FriendTaskController extends BaseController {
 		FriendTask friendTask = friendTaskService.getByOpenids(inviteOpenid, taskOpenid);
 		if (friendTask == null){
 			friendTask = new FriendTask();
-			friendTask.setId(null);
 			friendTask.setInviteOpenId(inviteOpenid);
 			friendTask.setTaskOpenId(taskOpenid);
 			friendTask.setQuestionA(1);
