@@ -23,9 +23,11 @@ import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.huli.entity.FriendInviter;
+import com.thinkgem.jeesite.modules.huli.entity.FriendShip;
 import com.thinkgem.jeesite.modules.huli.entity.FriendTask;
 import com.thinkgem.jeesite.modules.huli.entity.FriendWechatLog;
 import com.thinkgem.jeesite.modules.huli.service.FriendInviterService;
+import com.thinkgem.jeesite.modules.huli.service.FriendShipService;
 import com.thinkgem.jeesite.modules.huli.service.FriendSourceCodeService;
 import com.thinkgem.jeesite.modules.huli.service.FriendTaskService;
 import com.thinkgem.jeesite.modules.huli.service.FriendWechatLogService;
@@ -51,6 +53,9 @@ public class FriendTaskController extends BaseController {
 	
 	@Autowired
 	private  FriendSourceCodeService friendSourceCodeService;
+	
+	@Autowired
+	private FriendShipService friendShipService;
 	
 	/*@ModelAttribute
 	public FriendTask get(@RequestParam(required=false) String id) {
@@ -124,16 +129,38 @@ public class FriendTaskController extends BaseController {
 		if(StringUtils.isBlank(taskOpenid)){
 			return JsonResponseUtil.badResult("被邀请人openid不能为空！");
 		}
-		
 		if(question == null || question<1 || question>3){
 			return JsonResponseUtil.badResult("question参数传入错误！");
 		}
 		if(answer == null || answer<0 || answer>1){
 			return JsonResponseUtil.badResult("answer参数传入错误！");
 		}
+		boolean isHaveShip = false;
+		List<FriendShip> friendShips = friendShipService.getShipByInviteOpenid(inviteOpenid);
+		if(null!=friendShips&&!friendShips.isEmpty()){
+			   for (FriendShip ship:friendShips) {
+				   String dbtaskopenid = ship.getTaskOpenId();
+				   if(null!=dbtaskopenid&&dbtaskopenid.equals(taskOpenid)){
+					   isHaveShip = true;
+					   break;
+				   }
+			}
+		}
+		if(!isHaveShip){
+			FriendWechatLog taskUser = friendWechatLogService.getByOpenid(taskOpenid);
+			if (null == taskUser) {
+				return JsonResponseUtil.badResult("被邀请人,请先关注狐狸慧赚公众号");
+			}
+			FriendWechatLog inviteUser = friendWechatLogService.getByOpenid(inviteOpenid);
+			if (null == inviteUser) {
+				return JsonResponseUtil.badResult("邀请人,请先关注狐狸慧赚公众号");
+			}
+			 friendShipService.saveShip(taskUser, inviteUser);
+		}
 		FriendTask friendTask = friendTaskService.getByOpenids(inviteOpenid, taskOpenid);
 		if (friendTask == null){
 			friendTask = new FriendTask();
+			friendTask.setId(null);
 			friendTask.setInviteOpenId(inviteOpenid);
 			friendTask.setTaskOpenId(taskOpenid);
 			friendTask.setQuestionA(1);
@@ -173,7 +200,6 @@ public class FriendTaskController extends BaseController {
 				return JsonResponseUtil.badResult("第三题已回答，无法保存第三题答案！");
 			}
 		}
-		
 		// 2. 设值
 		if(question == 1){
 			friendTask.setAnswerA(answer);
