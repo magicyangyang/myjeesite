@@ -3,6 +3,7 @@
  */
 package com.thinkgem.jeesite.modules.huli.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +64,8 @@ public class FriendShipService extends CrudService<FriendShipDao, FriendShip> {
 			 friendShip.setTaskHeadimgurl(taskUser.getHeadimgurl());
 			 friendShip.setTaskNickname(taskUser.getNickName());
 			 friendShip.setRemark("");
+			 friendShip.setCreateTime(new Date());
+			 friendShip.setUpdateTime(new Date());
 			 try {
 				 save(friendShip);
 			} catch (Exception e) {

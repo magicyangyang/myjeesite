@@ -94,41 +94,60 @@ public class FriendTaskController extends BaseController {
 
 	@ResponseBody
 	@RequestMapping(value = "form")
-	public String form(FriendTask friendTask, Model model) {
-		FriendTask entity = null;
-		if (null!=friendTask){
-			entity = friendTaskService.get(friendTask);
-		}
+	public String form(String taskOpenid, String inviteOpenid, Model model) {
+		FriendTask entity = friendTaskService.getByOpenids(inviteOpenid, taskOpenid);
 		if (entity == null){
 			entity = new FriendTask();
+			entity.setInviteOpenId(inviteOpenid);
+			entity.setTaskOpenId(taskOpenid);
+			entity.setQuestionA(1);
+			entity.setQuestionB(2);
+			entity.setQuestionC(3);
+			entity.setAnswerA(0);
+			entity.setAnswerB(0);
+			entity.setAnswerC(0);
+			entity.setScore(0);
+			entity.setStatus(0);
 		}
-		return JsonResponseUtil.ok(friendTask);
+		return JsonResponseUtil.ok(entity);
 	}
 
+	
 	@ResponseBody
 	@RequestMapping(value = "")
-	public String save(FriendTask friendTask, Integer question, Integer answer, Model model, RedirectAttributes redirectAttributes) {
+	public String save(String taskOpenid, String inviteOpenid, Integer question, Integer answer, Model model, RedirectAttributes redirectAttributes) {
 		// 1. 校验
-		if(StringUtils.isBlank(friendTask.getInviteOpenId())){
+		if(StringUtils.isBlank(inviteOpenid)){
 			return JsonResponseUtil.badResult("发起人openid不能为空！");
 		}
 		
-		if(StringUtils.isBlank(friendTask.getTaskOpenId())){
+		if(StringUtils.isBlank(taskOpenid)){
 			return JsonResponseUtil.badResult("被邀请人openid不能为空！");
 		}
 		
 		if(question == null || question<1 || question>3){
 			return JsonResponseUtil.badResult("question参数传入错误！");
 		}
-		
 		if(answer == null || answer<0 || answer>1){
 			return JsonResponseUtil.badResult("answer参数传入错误！");
 		}
-		
+		FriendTask friendTask = friendTaskService.getByOpenids(inviteOpenid, taskOpenid);
+		if (friendTask == null){
+			friendTask = new FriendTask();
+			friendTask.setInviteOpenId(inviteOpenid);
+			friendTask.setTaskOpenId(taskOpenid);
+			friendTask.setQuestionA(1);
+			friendTask.setQuestionB(2);
+			friendTask.setQuestionC(3);
+			friendTask.setAnswerA(0);
+			friendTask.setAnswerB(0);
+			friendTask.setAnswerC(0);
+			friendTask.setScore(0);
+			friendTask.setStatus(0);
+		}
 		if(friendTask.getStatus() != null && friendTask.getStatus() == 1){
 			return JsonResponseUtil.badResult("答题已结束！");
 		}
-		
 		if(question == 1){
 			if(friendTask.getId() != null){
 				return JsonResponseUtil.badResult("第一题已回答，无法再保存第一题答案！");
