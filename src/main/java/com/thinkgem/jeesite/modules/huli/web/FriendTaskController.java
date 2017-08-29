@@ -243,6 +243,7 @@ public class FriendTaskController extends BaseController {
 	private void updateInviteStatus(FriendTask friendTask) {
 		List<FriendTask> tasks = friendTaskService.getTasksByInviteOpenid(friendTask.getInviteOpenId());
 		if(null==tasks||tasks.isEmpty()){
+			logger.info("[nodata]friendTask={}",friendTask);
 			return;
 		}
 		FriendInviter friendInviter = friendInviterService.getInfoByOpenid(friendTask.getInviteOpenId());
@@ -258,6 +259,7 @@ public class FriendTaskController extends BaseController {
 			friendInviter.setScore(friendTask.getScore());
 		}
 		if(null==friendInviter.getId()){
+			friendInviter.setIsNewRecord(true);
 			friendInviter.setId(IdGen.uuid());
 		}
 		if(tasks.size()==1){
@@ -280,6 +282,7 @@ public class FriendTaskController extends BaseController {
 			friendInviter.setInviteNum(tasks.size());
 			friendInviter.setScore(score);
 		}
+		logger.info("[updateInviteStatus]={}|friendInviter={}",friendTask,friendInviter);
 		friendInviterService.save(friendInviter);
 	}
 	private String getCodeByScore(String openid, int score) {
