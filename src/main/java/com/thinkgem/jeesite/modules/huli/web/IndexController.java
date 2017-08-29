@@ -5,6 +5,7 @@ package com.thinkgem.jeesite.modules.huli.web;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -227,16 +228,14 @@ public class IndexController extends BaseController {
 			}
 			try {
 				List<FriendTask> tasklist = friendTaskService.getTasksByFriendShip(inviteOpenId,taskOpenId);
+				FriendWechatLog inviteUser = friendWechatLogService.getByOpenid(inviteOpenId);
 				if (null != tasklist&& !tasklist.isEmpty()) {
-					FriendWechatLog inviteUser = friendWechatLogService.getByOpenid(inviteOpenId);
 					for (FriendTask friendTask : tasklist) {
 						friendTask.setInviteHeadimgurl(inviteUser.getHeadimgurl());
 						friendTask.setInviteNickname(inviteUser.getNickName());
 					}
-					return task_ok(tasklist,inviteUser);
-				} else {
-					return JsonResponseUtil.badResult(2, "暂无邀请人邀请你做任务");
 				}
+				return task_ok(tasklist,inviteUser);
 			} catch (Exception e) {
 				logger.info("[task_infoerror] inviteOpenid={}|e={}", inviteOpenId, e.getMessage(), e);
 			}
@@ -250,7 +249,7 @@ public class IndexController extends BaseController {
         inviteInfo.put("inviteHeadimgurl", invite.getHeadimgurl());
         inviteInfo.put("inviteNickname", invite.getNickName());
         inviteInfo.put("inviteOpenId", invite.getOpenid());
-        result.put("data", list);
+        result.put("data", list==null?Collections.emptyList():list);
         result.put("errorCode", 0);
         result.put("inviteInfo", inviteInfo);
         return  result.toJSONString();

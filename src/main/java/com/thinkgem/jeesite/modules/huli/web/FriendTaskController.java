@@ -182,7 +182,7 @@ public class FriendTaskController extends BaseController {
 		}else if(question == 2){
 			if(friendTask.getId() == null || friendTask.getAnswerA()==null){
 				return JsonResponseUtil.badResult("第一题未回答，无法保存第二题答案！");
-			}else if( friendTask.getAnswerA() == 0){
+			}else if( friendTask.getAnswerA() == 1){
 				return JsonResponseUtil.badResult("第一题回答错误，无法保存第二题答案！");
 			}else if( friendTask.getAnswerB()!=null && friendTask.getAnswerB() == 1&&friendTask.getStatus()==1){
 				return JsonResponseUtil.badResult("第二题已回答，无法保存第二题答案！");
@@ -203,8 +203,8 @@ public class FriendTaskController extends BaseController {
 		// 2. 设值
 		if(question == 1){
 			friendTask.setAnswerA(answer);
-			friendTask.setScore(answer);
-			friendTask.setStatus(answer==0 ? 1 : 0);
+			friendTask.setScore(answer==0 ? 1: 0);
+			friendTask.setStatus(answer==0 ? 0 : 1);
 			try {
 				FriendWechatLog  wechatLog =friendWechatLogService.getByOpenid(friendTask.getTaskOpenId());
 				friendTask.setTaskNickname(wechatLog.getNickName());
@@ -215,11 +215,11 @@ public class FriendTaskController extends BaseController {
 			}
 		}else if(question == 2){
 			friendTask.setAnswerB(answer);
-			friendTask.setScore(1+answer);
+			friendTask.setScore(1+(answer==0 ? 1: 0));
 			friendTask.setStatus(answer==0 ? 0 : 1);
 		}else if(question == 3){
 			friendTask.setAnswerC(answer);
-			friendTask.setScore(2+answer);
+			friendTask.setScore(2+(answer==0 ? 1: 0));
 			friendTask.setStatus(1);
 		}
 		
@@ -245,9 +245,22 @@ public class FriendTaskController extends BaseController {
 		if(null==tasks||tasks.isEmpty()){
 			return;
 		}
-		if(tasks.size()==1){
-			FriendInviter friendInviter = new FriendInviter();
+		FriendInviter friendInviter = friendInviterService.getInfoByOpenid(friendTask.getInviteOpenId());
+		if(friendInviter==null){
+			friendInviter = new FriendInviter();
 			friendInviter.setCode("");
+			friendInviter.setCreateTime(new Date());
+			friendInviter.setUpdateTime(new Date());
+			friendInviter.setOpenid(friendTask.getInviteOpenId());
+			friendInviter.setStatus(0);
+			friendInviter.setIsSendmoney(0);
+			friendInviter.setInviteNum(2);
+			friendInviter.setScore(friendTask.getScore());
+		}
+		if(null==friendInviter.getId()){
+			friendInviter.setId(IdGen.uuid());
+		}
+		if(tasks.size()==1){
 			friendInviter.setCreateTime(new Date());
 			friendInviter.setUpdateTime(new Date());
 			friendInviter.setOpenid(friendTask.getInviteOpenId());
@@ -255,29 +268,7 @@ public class FriendTaskController extends BaseController {
 			friendInviter.setIsSendmoney(0);
 			friendInviter.setInviteNum(1);
 			friendInviter.setScore(friendTask.getScore());
-			friendInviterService.save(friendInviter);
 		}else{
-			FriendInviter friendInviter = friendInviterService.getInfoByOpenid(friendTask.getInviteOpenId());
-			if(friendInviter==null){
-				friendInviter = new FriendInviter();
-				friendInviter.setCode("");
-				friendInviter.setCreateTime(new Date());
-				friendInviter.setUpdateTime(new Date());
-				friendInviter.setOpenid(friendTask.getInviteOpenId());
-				friendInviter.setStatus(0);
-				friendInviter.setIsSendmoney(0);
-				friendInviter.setInviteNum(2);
-				friendInviter.setScore(friendTask.getScore());
-			}else{
-				if(null==friendInviter.getId()){
-					friendInviter.setIsNewRecord(true);
-				}else{
-					friendInviter.setIsNewRecord(false);
-				}
-			}
-			if(null==friendInviter.getId()){
-				friendInviter.setId(IdGen.uuid());
-			}
 			int score = friendInviter.getScore();
 			if(tasks.size()<=3){
 				score =friendTask.getScore()+friendInviter.getScore();
@@ -288,10 +279,9 @@ public class FriendTaskController extends BaseController {
 			friendInviter.setIsSendmoney(tasks.size()>=3?1:0);
 			friendInviter.setInviteNum(tasks.size());
 			friendInviter.setScore(score);
-			friendInviterService.save(friendInviter);
 		}
+		friendInviterService.save(friendInviter);
 	}
-
 	private String getCodeByScore(String openid, int score) {
 		return friendSourceCodeService.getCodeByScore(openid,score);
 	}
