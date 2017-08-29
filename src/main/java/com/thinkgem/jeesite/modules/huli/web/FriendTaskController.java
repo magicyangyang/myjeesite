@@ -123,10 +123,6 @@ public class FriendTaskController extends BaseController {
 	@RequestMapping(value = "")
 	public String save(String taskOpenid, String inviteOpenid, Integer question, Integer answer, Model model, RedirectAttributes redirectAttributes) {
 		// 1. 校验
-		if(StringUtils.isBlank(inviteOpenid)){
-			return JsonResponseUtil.badResult("发起人openid不能为空！");
-		}
-		
 		if(StringUtils.isBlank(taskOpenid)){
 			return JsonResponseUtil.badResult("被邀请人openid不能为空！");
 		}
@@ -137,12 +133,15 @@ public class FriendTaskController extends BaseController {
 			return JsonResponseUtil.badResult("answer参数传入错误！");
 		}
 		boolean isHaveShip = false;
-		List<FriendShip> friendShips = friendShipService.getShipByInviteOpenid(inviteOpenid);
+		List<FriendShip> friendShips = friendShipService.getShipByTaskOpenid(taskOpenid);
 		if(null!=friendShips&&!friendShips.isEmpty()){
 			   for (FriendShip ship:friendShips) {
-				   String dbtaskopenid = ship.getTaskOpenId();
-				   if(null!=dbtaskopenid&&dbtaskopenid.equals(taskOpenid)){
+				   String dbinviteOpenid = ship.getInviteOpenId();
+				   if(null!=dbinviteOpenid&&dbinviteOpenid.equals(inviteOpenid)){
 					   isHaveShip = true;
+					   if(StringUtils.isBlank(inviteOpenid)){
+							 inviteOpenid=dbinviteOpenid;
+						}
 					   break;
 				   }
 			}
@@ -152,11 +151,17 @@ public class FriendTaskController extends BaseController {
 			if (null == taskUser) {
 				return JsonResponseUtil.badResult("被邀请人,请先关注狐狸慧赚公众号");
 			}
+			if(StringUtils.isBlank(inviteOpenid)){
+				return JsonResponseUtil.badResult("暂时没有人邀请你呦！");
+			}
 			FriendWechatLog inviteUser = friendWechatLogService.getByOpenid(inviteOpenid);
 			if (null == inviteUser) {
 				return JsonResponseUtil.badResult("邀请人,请先关注狐狸慧赚公众号");
 			}
 			 friendShipService.saveShip(taskUser, inviteUser);
+		}
+		if(StringUtils.isBlank(inviteOpenid)){
+			return JsonResponseUtil.badResult("暂时没有人邀请你呦！");
 		}
 		FriendTask friendTask = friendTaskService.getByOpenids(inviteOpenid, taskOpenid);
 		if (friendTask == null){
