@@ -56,6 +56,7 @@ public class FriendSourceCodeService extends CrudService<FriendSourceCodeDao, Fr
 		return dao.getInfobyOpenid(openid);
 	}
 	
+	@Transactional(readOnly = false)
 	public String getCodeByScore(String openid, int score) {
 		FriendSourceCode code = dao.getInfobyOpenid(openid);
 		if(code==null){

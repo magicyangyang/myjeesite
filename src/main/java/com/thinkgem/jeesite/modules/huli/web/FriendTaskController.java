@@ -208,7 +208,7 @@ public class FriendTaskController extends BaseController {
 		// 2. 设值
 		if(question == 1){
 			friendTask.setAnswerA(answer);
-			friendTask.setScore(answer==0 ? 1: 0);
+			friendTask.setScore(answer==0 ? 5: 0);
 			friendTask.setStatus(answer==0 ? 0 : 1);
 			try {
 				FriendWechatLog  wechatLog =friendWechatLogService.getByOpenid(friendTask.getTaskOpenId());
@@ -220,11 +220,11 @@ public class FriendTaskController extends BaseController {
 			}
 		}else if(question == 2){
 			friendTask.setAnswerB(answer);
-			friendTask.setScore(1+(answer==0 ? 1: 0));
+			friendTask.setScore(5+(answer==0 ? 8: 0));
 			friendTask.setStatus(answer==0 ? 0 : 1);
 		}else if(question == 3){
 			friendTask.setAnswerC(answer);
-			friendTask.setScore(2+(answer==0 ? 1: 0));
+			friendTask.setScore(13+(answer==0 ? 10: 0));
 			friendTask.setStatus(1);
 		}
 		

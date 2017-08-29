@@ -208,7 +208,7 @@ public class IndexController extends BaseController {
 					}
 					return  task_ok(tasklist,inviteUser);
 				} else {
-					return JsonResponseUtil.badResult(3, "太没面子了，还没有人帮你赚钱");
+					return task_fail(3, "太没面子了，还没有人帮你赚钱",inviteUser);
 				}
 			} catch (Exception e) {
 				logger.info("[binderror] inviteOpenid={}|e={}", inviteOpenId, e.getMessage(), e);
@@ -222,7 +222,7 @@ public class IndexController extends BaseController {
 			if(StringUtils.isBlank(inviteOpenId)){
 				List<FriendShip> shipList = friendShipService.getShipByTaskOpenid(taskOpenId);
 				if(null==shipList||shipList.isEmpty()){
-					return JsonResponseUtil.badResult(2, "暂无邀请人邀请你做任务");
+					return JsonResponseUtil.badResult("暂无邀请人邀请你做任务");
 				}
 				 inviteOpenId = shipList.get(0).getInviteOpenId();
 			}
@@ -255,6 +255,18 @@ public class IndexController extends BaseController {
         return  result.toJSONString();
     }
 
+    private static String task_fail(int errorCode,String cause,FriendWechatLog invite) {
+    	Map<String,String> inviteInfo = new HashMap<String,String>();
+        inviteInfo.put("inviteHeadimgurl", invite.getHeadimgurl());
+        inviteInfo.put("inviteNickname", invite.getNickName());
+        inviteInfo.put("inviteOpenId", invite.getOpenid());
+        JSONObject result = new JSONObject();
+        result.put("errorCode", errorCode);
+        result.put("errorMessage", cause);
+        result.put("inviteInfo", inviteInfo);
+        return  result.toJSONString();
+    }
+    
 	/**
 	 * 存储用户的微信账号信息数据
 	 * 
