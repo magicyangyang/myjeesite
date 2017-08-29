@@ -121,7 +121,7 @@
 			<include refid="friendSourceCodeColumns"/>
 		FROM friend_source_code a
 		<include refid="friendSourceCodeJoins"/>
-		WHERE a.score = #{score} and status=0 and openid is not null order by create_time limit 1;
+		WHERE a.score = #{score} and status=0 and openid is null order by create_time limit 1;
 	</select>
 	
 </mapper>
