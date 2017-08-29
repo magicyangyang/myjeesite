@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.utils.IdGen;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.huli.entity.FriendInviter;
@@ -183,19 +184,19 @@ public class FriendTaskController extends BaseController {
 				return JsonResponseUtil.badResult("第一题未回答，无法保存第二题答案！");
 			}else if( friendTask.getAnswerA() == 0){
 				return JsonResponseUtil.badResult("第一题回答错误，无法保存第二题答案！");
-			}else if( friendTask.getAnswerB()!=null && friendTask.getAnswerB() == 1){
+			}else if( friendTask.getAnswerB()!=null && friendTask.getAnswerB() == 1&&friendTask.getStatus()==1){
 				return JsonResponseUtil.badResult("第二题已回答，无法保存第二题答案！");
 			}
 		}else if(question == 3){
 			if(friendTask.getId() == null || friendTask.getAnswerA()==null){
 				return JsonResponseUtil.badResult("第一题未回答，无法保存第三题答案！");
-			}else if(friendTask.getAnswerA() == 0){
+			}else if(friendTask.getAnswerA() == 1){
 				return JsonResponseUtil.badResult("第一题回答错误，无法保存第三题答案！");
 			}else if(friendTask.getAnswerB()==null){
 				return JsonResponseUtil.badResult("第二题未回答，无法保存第三题答案！");
-			}else if(friendTask.getAnswerB() == 0){
+			}else if(friendTask.getAnswerB() == 1){
 				return JsonResponseUtil.badResult("第二题回答错误，无法保存第三题答案！");
-			}else if( friendTask.getAnswerC()!=null && friendTask.getAnswerC() == 1){
+			}else if( friendTask.getAnswerC()!=null && friendTask.getAnswerC() == 1&&friendTask.getStatus()==1){
 				return JsonResponseUtil.badResult("第三题已回答，无法保存第三题答案！");
 			}
 		}
@@ -215,7 +216,7 @@ public class FriendTaskController extends BaseController {
 		}else if(question == 2){
 			friendTask.setAnswerB(answer);
 			friendTask.setScore(1+answer);
-			friendTask.setStatus(answer==0 ? 1 : 0);
+			friendTask.setStatus(answer==0 ? 0 : 1);
 		}else if(question == 3){
 			friendTask.setAnswerC(answer);
 			friendTask.setScore(2+answer);
@@ -230,7 +231,6 @@ public class FriendTaskController extends BaseController {
 			}
 		} catch (Exception e) {
 			logger.error("保存答题结果失败！", e);
-			return JsonResponseUtil.badResult("保存答题结果失败！");
 		}
 		
 		// 4. 返回结果
@@ -243,11 +243,10 @@ public class FriendTaskController extends BaseController {
 	private void updateInviteStatus(FriendTask friendTask) {
 		List<FriendTask> tasks = friendTaskService.getTasksByInviteOpenid(friendTask.getInviteOpenId());
 		if(null==tasks||tasks.isEmpty()){
-			
+			return;
 		}
 		if(tasks.size()==1){
 			FriendInviter friendInviter = new FriendInviter();
-			friendInviter.setIsNewRecord(true);
 			friendInviter.setCode("");
 			friendInviter.setCreateTime(new Date());
 			friendInviter.setUpdateTime(new Date());
@@ -259,7 +258,26 @@ public class FriendTaskController extends BaseController {
 			friendInviterService.save(friendInviter);
 		}else{
 			FriendInviter friendInviter = friendInviterService.getInfoByOpenid(friendTask.getInviteOpenId());
-			friendInviter.setIsNewRecord(false);
+			if(friendInviter==null){
+				friendInviter = new FriendInviter();
+				friendInviter.setCode("");
+				friendInviter.setCreateTime(new Date());
+				friendInviter.setUpdateTime(new Date());
+				friendInviter.setOpenid(friendTask.getInviteOpenId());
+				friendInviter.setStatus(0);
+				friendInviter.setIsSendmoney(0);
+				friendInviter.setInviteNum(2);
+				friendInviter.setScore(friendTask.getScore());
+			}else{
+				if(null==friendInviter.getId()){
+					friendInviter.setIsNewRecord(true);
+				}else{
+					friendInviter.setIsNewRecord(false);
+				}
+			}
+			if(null==friendInviter.getId()){
+				friendInviter.setId(IdGen.uuid());
+			}
 			int score = friendInviter.getScore();
 			if(tasks.size()<=3){
 				score =friendTask.getScore()+friendInviter.getScore();
