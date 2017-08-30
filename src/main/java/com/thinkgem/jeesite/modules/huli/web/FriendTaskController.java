@@ -137,7 +137,7 @@ public class FriendTaskController extends BaseController {
 		if(null!=friendShips&&!friendShips.isEmpty()){
 			   for (FriendShip ship:friendShips) {
 				   String dbinviteOpenid = ship.getInviteOpenId();
-				   if(null!=dbinviteOpenid&&dbinviteOpenid.equals(inviteOpenid)){
+				   if(null!=dbinviteOpenid){
 					   isHaveShip = true;
 					   if(StringUtils.isBlank(inviteOpenid)){
 							 inviteOpenid=dbinviteOpenid;
