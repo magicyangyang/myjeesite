@@ -163,6 +163,9 @@ public class FriendTaskController extends BaseController {
 		if(StringUtils.isBlank(inviteOpenid)){
 			return JsonResponseUtil.badResult("暂时没有人邀请你呦！");
 		}
+		if (inviteOpenid.equals(taskOpenid)) {
+			return JsonResponseUtil.badResult("自己不能帮自己答题呦");
+		}
 		FriendTask friendTask = friendTaskService.getByOpenids(inviteOpenid, taskOpenid);
 		if (friendTask == null){
 			friendTask = new FriendTask();

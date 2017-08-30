@@ -234,6 +234,14 @@ public class IndexController extends BaseController {
 						friendTask.setInviteHeadimgurl(inviteUser.getHeadimgurl());
 						friendTask.setInviteNickname(inviteUser.getNickName());
 					}
+				}else{
+					tasklist = friendTaskService.getTasksByInviteOpenid(inviteOpenId);
+					if (null != tasklist&& !tasklist.isEmpty()) {
+						for (FriendTask friendTask : tasklist) {
+							friendTask.setInviteHeadimgurl(inviteUser.getHeadimgurl());
+							friendTask.setInviteNickname(inviteUser.getNickName());
+						}
+					}
 				}
 				return task_ok(tasklist,inviteUser);
 			} catch (Exception e) {
