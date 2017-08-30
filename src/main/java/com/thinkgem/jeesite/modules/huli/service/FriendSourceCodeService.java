@@ -68,8 +68,12 @@ public class FriendSourceCodeService extends CrudService<FriendSourceCodeDao, Fr
 				code.setStatus(1);
 				save(code);
 			}
+			code=getInfobyOpenid(openid);
+			if(null==code){
+				logger.error("[getCodeByScore]hava no code score={}|openid={}",score,openid);
+				return null;
+			}
 		}
-		code=getInfobyOpenid(openid);
 		return code.getCode();
 	}
 
