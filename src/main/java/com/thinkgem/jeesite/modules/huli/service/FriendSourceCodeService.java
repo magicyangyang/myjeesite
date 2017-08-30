@@ -61,10 +61,14 @@ public class FriendSourceCodeService extends CrudService<FriendSourceCodeDao, Fr
 		FriendSourceCode code = dao.getInfobyOpenid(openid);
 		if(code==null){
 			code=dao.getCodeInfoByUnUsedScore(score);
-			code.setOpenid(openid);
-			code.setIsNewRecord(true);
-			code.setStatus(1);
-			save(code);
+			if(code==null){
+				logger.error("[getCodeByScore]hava no code score={}|openid={}",score,openid);
+			}else{
+				code.setOpenid(openid);
+				code.setIsNewRecord(true);
+				code.setStatus(1);
+				save(code);
+			}
 		}
 		return code.getCode();
 	}

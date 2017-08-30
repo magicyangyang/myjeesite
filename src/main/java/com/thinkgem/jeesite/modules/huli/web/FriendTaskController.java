@@ -276,9 +276,15 @@ public class FriendTaskController extends BaseController {
 			friendInviter.setInviteNum(1);
 			friendInviter.setScore(friendTask.getScore());
 		}else{
-			int score = friendInviter.getScore();
+			int score = 0;
 			if(tasks.size()<=3){
-				score =friendTask.getScore()+friendInviter.getScore();
+				for (FriendTask task : tasks) {
+					score +=task.getScore();
+				}
+			}else{
+				for (int i=0;i<=3;i++) {
+					score +=tasks.get(i).getScore();
+				}
 			}
 			friendInviter.setCode(tasks.size()==3?getCodeByScore(friendTask.getInviteOpenId(),score):friendInviter.getCode());
 			friendInviter.setUpdateTime(new Date());
