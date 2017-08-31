@@ -206,7 +206,7 @@ public class IndexController extends BaseController {
 						friendTask.setInviteHeadimgurl(inviteUser.getHeadimgurl());
 						friendTask.setInviteNickname(inviteUser.getNickName());
 					}
-					return  task_ok(tasklist,inviteUser);
+					return  task_ok(tasklist,inviteUser,tasklist==null?false:tasklist.size()>=3);
 				} else {
 					return task_fail(3, "太没面子了，还没有人帮你赚钱",inviteUser);
 				}
@@ -227,15 +227,31 @@ public class IndexController extends BaseController {
 				 inviteOpenId = shipList.get(0).getInviteOpenId();
 			}
 			try {
-				List<FriendTask> tasklist = friendTaskService.getTasksByInviteOpenid(inviteOpenId);
+				List<FriendTask> tasklist = friendTaskService.getTasksByFriendShip(inviteOpenId,taskOpenId);
 				FriendWechatLog inviteUser = friendWechatLogService.getByOpenid(inviteOpenId);
+				boolean isFinishedTask = false;
 				if (null != tasklist&& !tasklist.isEmpty()) {
 					for (FriendTask friendTask : tasklist) {
 						friendTask.setInviteHeadimgurl(inviteUser.getHeadimgurl());
 						friendTask.setInviteNickname(inviteUser.getNickName());
 					}
+					List<FriendTask> currentTasklist = friendTaskService.getTasksByInviteOpenid(inviteOpenId);
+					if(null!=currentTasklist&&currentTasklist.size()>=3){
+						isFinishedTask =true;
+					}
+				}else{
+					tasklist = friendTaskService.getTasksByInviteOpenid(inviteOpenId);
+					if (null != tasklist&& !tasklist.isEmpty()) {
+						for (FriendTask friendTask : tasklist) {
+							friendTask.setInviteHeadimgurl(inviteUser.getHeadimgurl());
+							friendTask.setInviteNickname(inviteUser.getNickName());
+						}
+						if(tasklist.size()>=3){
+							isFinishedTask =true;
+						}
+					}
 				}
-				return task_ok(tasklist,inviteUser);
+				return task_ok(tasklist,inviteUser,isFinishedTask);
 			} catch (Exception e) {
 				logger.info("[task_infoerror] inviteOpenid={}|e={}", inviteOpenId, e.getMessage(), e);
 			}
@@ -243,7 +259,7 @@ public class IndexController extends BaseController {
 		return JsonResponseUtil.badResult("系统繁忙,请稍候再试");
 	}
 	
-    private static String task_ok(List<FriendTask> list,FriendWechatLog invite) {
+    private static String task_ok(List<FriendTask> list,FriendWechatLog invite,boolean isTaskFinished) {
         JSONObject result = new JSONObject();
         Map<String,String> inviteInfo = new HashMap<String,String>();
         inviteInfo.put("inviteHeadimgurl", invite.getHeadimgurl());
@@ -252,6 +268,7 @@ public class IndexController extends BaseController {
         result.put("data", list==null?Collections.emptyList():list);
         result.put("errorCode", 0);
         result.put("inviteInfo", inviteInfo);
+        result.put("isTaskFinished",isTaskFinished);
         return  result.toJSONString();
     }
 
