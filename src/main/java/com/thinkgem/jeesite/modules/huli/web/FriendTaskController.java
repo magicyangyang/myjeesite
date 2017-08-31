@@ -138,10 +138,13 @@ public class FriendTaskController extends BaseController {
 			   for (FriendShip ship:friendShips) {
 				   String dbinviteOpenid = ship.getInviteOpenId();
 				   if(null!=dbinviteOpenid){
-					   isHaveShip = true;
 					   if(StringUtils.isBlank(inviteOpenid)){
 							 inviteOpenid=dbinviteOpenid;
+							 isHaveShip = true;
 						}
+					   if(dbinviteOpenid.equals(inviteOpenid)){
+						   isHaveShip = true;
+					   }
 					   break;
 				   }
 			}
@@ -233,6 +236,16 @@ public class FriendTaskController extends BaseController {
 		
 		// 3. 保存
 		try {
+			List<FriendTask> taskInfos = friendTaskService.getTasksByInviteOpenid(inviteOpenid);
+			if(null!=taskInfos&&taskInfos.size()>=3){
+				int statusSum=0;
+				for (FriendTask task : taskInfos) {
+					statusSum += task.getStatus();
+				}
+				if(statusSum==3){
+					return JsonResponseUtil.badResult("哎呀！手慢了，其他人已经抢答完成~");
+				}
+			}
 			friendTaskService.save(friendTask);
 			if(friendTask.getStatus()==1){
 				updateInviteStatus(friendTask);
