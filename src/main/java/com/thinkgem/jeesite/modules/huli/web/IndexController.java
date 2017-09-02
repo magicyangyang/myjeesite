@@ -227,31 +227,23 @@ public class IndexController extends BaseController {
 				 inviteOpenId = shipList.get(0).getInviteOpenId();
 			}
 			try {
-				List<FriendTask> tasklist = friendTaskService.getTasksByFriendShip(inviteOpenId,taskOpenId);
+				List<FriendTask> currentTasklist = friendTaskService.getTasksByInviteOpenid(inviteOpenId);
 				FriendWechatLog inviteUser = friendWechatLogService.getByOpenid(inviteOpenId);
-				boolean isFinishedTask = false;
+				if(null!=currentTasklist&&currentTasklist.size()>=3){
+					for (FriendTask friendTask : currentTasklist) {
+						friendTask.setInviteHeadimgurl(inviteUser.getHeadimgurl());
+						friendTask.setInviteNickname(inviteUser.getNickName());
+					}
+					return task_ok(currentTasklist,inviteUser,true);
+				}
+				List<FriendTask> tasklist = friendTaskService.getTasksByFriendShip(inviteOpenId,taskOpenId);
 				if (null != tasklist&& !tasklist.isEmpty()) {
 					for (FriendTask friendTask : tasklist) {
 						friendTask.setInviteHeadimgurl(inviteUser.getHeadimgurl());
 						friendTask.setInviteNickname(inviteUser.getNickName());
 					}
-					List<FriendTask> currentTasklist = friendTaskService.getTasksByInviteOpenid(inviteOpenId);
-					if(null!=currentTasklist&&currentTasklist.size()>=3){
-						isFinishedTask =true;
-					}
-				}else{
-					tasklist = friendTaskService.getTasksByInviteOpenid(inviteOpenId);
-					if (null != tasklist&& !tasklist.isEmpty()) {
-						for (FriendTask friendTask : tasklist) {
-							friendTask.setInviteHeadimgurl(inviteUser.getHeadimgurl());
-							friendTask.setInviteNickname(inviteUser.getNickName());
-						}
-						if(tasklist.size()>=3){
-							isFinishedTask =true;
-						}
-					}
-				}
-				return task_ok(tasklist,inviteUser,isFinishedTask);
+				} 
+				return task_ok(tasklist,inviteUser,false);
 			} catch (Exception e) {
 				logger.info("[task_infoerror] inviteOpenid={}|e={}", inviteOpenId, e.getMessage(), e);
 			}
