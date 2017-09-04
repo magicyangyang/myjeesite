@@ -10,6 +10,7 @@
 		a.url AS "url",
 		a.date_int AS "dateInt",
 		a.share_result AS "shareResult",
+		a.result AS "result",
 		a.come_from AS "comeFrom",
 		a.campaign AS "campaign",
 		a.module AS "module",
@@ -55,6 +56,9 @@
 			</if>
 			<if test="shareResult != null and shareResult != ''">
 				AND a.share_result = #{shareResult}
+			</if>
+			<if test="result != null and result != ''">
+				AND a.result = #{result}
 			</if>
 			<if test="comeFrom != null and comeFrom != ''">
 				AND a.come_from = #{comeFrom}
@@ -107,6 +111,7 @@
 			url,
 			date_int,
 			share_result,
+			result,
 			come_from,
 			campaign,
 			module,
@@ -120,6 +125,7 @@
 			#{url},
 			#{dateInt},
 			#{shareResult},
+			#{result},
 			#{comeFrom},
 			#{campaign},
 			#{module},
@@ -136,6 +142,7 @@
 			url = #{url},
 			date_int = #{dateInt},
 			share_result = #{shareResult},
+			result = #{result},
 			come_from = #{comeFrom},
 			campaign = #{campaign},
 			module = #{module},

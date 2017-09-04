@@ -222,7 +222,7 @@ public class IndexController extends BaseController {
 			if(StringUtils.isBlank(inviteOpenId)){
 				List<FriendShip> shipList = friendShipService.getShipByTaskOpenid(taskOpenId);
 				if(null==shipList||shipList.isEmpty()){
-					return JsonResponseUtil.badResult("暂无邀请人邀请你做任务");
+					return JsonResponseUtil.badResult(2,"暂无邀请人邀请你做任务");
 				}
 				 inviteOpenId = shipList.get(0).getInviteOpenId();
 			}

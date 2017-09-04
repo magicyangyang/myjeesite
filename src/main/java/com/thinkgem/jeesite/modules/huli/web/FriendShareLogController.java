@@ -44,15 +44,24 @@ public class FriendShareLogController extends BaseController {
 		if (shareLog == null || StringUtils.isBlank(shareLog.getOpenid())) {
 			return JsonResponseUtil.badResult("openid不能为空");
 		}
-		logger.info("from={}|type={}result={}|remark={}|openid={}", shareLog.getComeFrom(), shareLog.getType(),
-				shareLog.getShareResult(), shareLog.getRemark(), shareLog.getOpenid());
+		logger.info("from={}|type={}result={}|remark={}|openid={}|url={}", shareLog.getComeFrom(), shareLog.getType(),
+				shareLog.getShareResult(), shareLog.getRemark(), shareLog.getOpenid(),shareLog.getUrl());
 		try {
 			shareLog.setUid(0L);
 			shareLog.setOptTime(new Date());
-			shareLog.setId(null);
-			shareLog.setCampaign(0);
+			if (null == shareLog.getCampaign()) {
+				shareLog.setCampaign(3);
+			}
+			if (null == shareLog.getShareResult()) {
+				shareLog.setShareResult(1);
+			}
+			if (null == shareLog.getComeFrom()) {
+				shareLog.setComeFrom(2);
+			}
 			shareLog.setDateInt(Integer.parseInt(DateFormatUtils.format(new Date(), "yyyyMMdd")));
-			shareLog.setModule("name");
+			if (null == shareLog.getRemark()) {
+				shareLog.setModule("activity");
+			}
 			if (null == shareLog.getRemark()) {
 				shareLog.setRemark("狐狸活动");
 			}

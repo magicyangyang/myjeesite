@@ -25,6 +25,7 @@ public class FriendShareLog extends DataEntity<FriendShareLog> {
 	private String url;		// 操作页面url
 	private Integer dateInt;		// 操作时间yyyyMMdd用于统计（按天）
 	private Integer shareResult;		// 分享结果（1-成功 2-失败3-未知）
+	private String result;//前端用result
 	private Integer comeFrom;		// 分享自&hellip;&hellip;（1-WAP 2-微信 3-App）
 	private Integer campaign;		// 活动标识
 	private String module;		// 操作模块
@@ -138,5 +139,14 @@ public class FriendShareLog extends DataEntity<FriendShareLog> {
 	public void setOpenid(String openid) {
 		this.openid = openid;
 	}
+
+	public String getResult() {
+		return result;
+	}
+
+	public void setResult(String result) {
+		this.result = result;
+	}
+	
 	
 }
